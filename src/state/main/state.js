@@ -1,7 +1,8 @@
 
 const state = {
 
-    part: null
+    part: null,
+    count: 0
 
 }
 
