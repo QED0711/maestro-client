@@ -4,7 +4,7 @@ import './App.css';
 
 import socketIOClient from 'socket.io-client';
 
-const SERVER = "http://localhost:5000"
+const SERVER = "http://192.168.1.217:5000"
 
 const socket = socketIOClient(SERVER)
 
@@ -20,7 +20,7 @@ function App() {
   
   return (
     <div className="App">
-      <button onClick={handleClick}>
+      <button onClick={handleClick} style={{margin: "20rem", transform: "scale(3)"}}>
         SEND COMM MESSAGE
       </button>
     </div>
