@@ -1,8 +1,9 @@
 
 const methods = {
 
-    // your methods here...
-
+    getLatency(){
+        return this.state.latency
+    }
 }
 
 export default methods;

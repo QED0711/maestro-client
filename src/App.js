@@ -1,51 +1,102 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import socketIOClient from 'socket.io-client';
+import {mainContext} from './state/main/mainProvider';
 
-import * as Tone from "tone"
-import { mainContext } from './state/main/mainProvider';
+import socket from './helpers/socket';
+import synth from './helpers/synth'
 
-const synth = new Tone.Synth().toMaster();
+import Metronome from './components/Metronome';
+import Ping from './components/Ping';
+import regressor from './helpers/regression';
 
-//play a middle 'C' for the duration of an 8th note
+const sleep = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 
-const SERVER = "http://192.168.1.217:5000"
+const App = () => {
+  const {state, setters, methods} = useContext(mainContext);
 
-const socket = socketIOClient(SERVER)
+  useEffect(() => {
+
+    // set the clientID if it has not been set
+    !state.clientID && setters.setClientID(Date.now())
+
+    // setup socket actions here
+    if(state.clientID){
+      socket.on(`ping-${state.clientID}`, data => {
+        setters.appendLatencyPing({...data, clientTime: Date.now()})
+      })
+
+      socket.on(`sync-complete-${state.clientID}`, data => {
+        setters.calcAndSetLatency()
+        console.log("sync-complete")
+      })
+
+      socket.on("play", async data => {
+        const latency = methods.getLatency()
+        const startTime = data.startTime - latency;
+        console.log(latency)
+
+        // while(true){
+        //   if(Date.now() >= startTime) break;
+        // }
+
+        let numBeats = 1;
+        // let currentTime = Date.now();
+        let nextBeat = startTime;
+        while(numBeats <= 32){
+          // if the current time is equal to or greater than the next beat time we send a click and reset for the following click
+          if (Date.now() >= nextBeat){            
+            synth.triggerAttackRelease("C4", "8n");
+            nextBeat = nextBeat + 500;
+            // currentTime = Date.now();
+            numBeats += 1
+          } 
+        }
+
+      })
+
+      socket.on("test", async data => {
+        synth.triggerAttackRelease("C4", "8n");
+        console.log({...data, clientTime: Date.now()})
+      })
+
+    }
 
 
-function App() {
+
+  }, [state.clientID])
+
   
-  const {state, setters} = useContext(mainContext)
+    const handlePlay = e => {
+      socket.emit("start-performance", {delay: 3000})
+    }
 
-  socket.on("test", data => {
-    // synth.triggerAttackRelease("C4", "8n");
-    // console.log
-    setters.setCount(data.count)
-    console.log(data.count, new Date().getTime() + ",")
-  })
-  const handleClick = e => {
-    socket.emit("comm", {message: "This is a comm message from the client"})
-  }
+    return (
+      <div className="App">
+        Client ID: {state.clientID}
+        {/* <Metronome /> */}
+        <br/>
+        {
+          !!state.latency 
+          &&
+        <>Latency: {state.latency}</>
+        }
+        {
+          !!state.latency
+          &&
+          <button onClick={handlePlay}>
+            PLAY
+          </button>
+        }
+        <Ping />
+      </div>
+    );
   
-  const handleSingleClick = e => {
-    socket.emit("single", {message: "This is a comm message from the client"})
-  }
-  
-  return (
-    <div className="App">
-      <h1>COUNT: {state.count}</h1>
-      <button onClick={handleClick} style={{margin: "20rem", transform: "scale(3)"}}>
-        SEND COMM MESSAGE
-      </button>
-      <br/>
-      <button onClick={handleSingleClick} style={{margin: "20rem", transform: "scale(3)"}}>
-        SEND COMM MESSAGE
-      </button>
-    </div>
-  );
+
+
 }
 
 export default App;
