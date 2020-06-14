@@ -32,6 +32,7 @@ const App = () => {
       })
 
       socket.on("play", async data => {
+        console.log("PLAY RECEIVED")
         const latency = methods.getLatency()
         const startTime = data.startTime - latency;
         console.log(latency)
@@ -68,7 +69,7 @@ const App = () => {
 
   
     const handlePlay = e => {
-      socket.emit("start-performance", {delay: 3000})
+      socket.emit("start-performance", {delay: 5000})
     }
 
     return (
