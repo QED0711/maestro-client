@@ -10,10 +10,7 @@ import synth from './helpers/synth'
 import Metronome from './components/Metronome';
 import Ping from './components/Ping';
 import regressor from './helpers/regression';
-
-const sleep = ms => {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+import SyncUpdate from './components/SyncUpdate';
 
 const App = () => {
   const {state, setters, methods} = useContext(mainContext);
@@ -77,6 +74,7 @@ const App = () => {
     return (
       <div className="App">
         Client ID: {state.clientID}
+        <SyncUpdate />
         {/* <Metronome /> */}
         <br/>
         {
@@ -91,7 +89,7 @@ const App = () => {
             PLAY
           </button>
         }
-        <Ping />
+        {/* <Ping /> */}
       </div>
     );
   

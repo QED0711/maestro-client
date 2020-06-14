@@ -1,5 +1,9 @@
 import socketIOClient from 'socket.io-client';
-const SERVER = "http://192.168.1.217:5000"
+
+const SERVER_HOST = window.location.hostname;
+const SERVER_PORT = 5000
+
+const SERVER = `http://${SERVER_HOST}:${SERVER_PORT}`
 
 const socket = socketIOClient(SERVER)
 

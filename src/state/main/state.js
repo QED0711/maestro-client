@@ -3,7 +3,7 @@ const state = {
 
     clientID: null,
     latencyPings: [],
-    latency: 0,
+    latency: null,
 
     part: null,
 
