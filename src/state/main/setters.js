@@ -10,7 +10,13 @@ const setters = {
         const averageLatency = data.reduce((a, b) => a + b) / data.length;
         const rounded = Math.round(averageLatency)
         this.setState({latency: rounded})        
-    }
+    },
+
+    incrementCount(){
+        this.setState({
+            count: this.state.count + 1
+        })
+    },
 
 }
 

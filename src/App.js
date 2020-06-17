@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -11,9 +11,12 @@ import Metronome from './components/Metronome';
 import Ping from './components/Ping';
 import regressor from './helpers/regression';
 import SyncUpdate from './components/SyncUpdate';
+import MeasureStats from './components/MeasureStats';
 
 const App = () => {
   const {state, setters, methods} = useContext(mainContext);
+
+  
 
   useEffect(() => {
 
@@ -31,30 +34,28 @@ const App = () => {
         console.log("sync-complete")
       })
 
-      socket.on("play", async data => {
-        console.log("PLAY RECEIVED")
+      socket.on("play", data => {
         const latency = methods.getLatency()
         const startTime = data.startTime - latency;
-        console.log(latency)
-
-        // while(true){
-        //   if(Date.now() >= startTime) break;
-        // }
-
-        let numBeats = 1;
-        // let currentTime = Date.now();
+        let numBeats = 0;
         let nextBeat = startTime;
-        while(numBeats <= 32){
-          // if the current time is equal to or greater than the next beat time we send a click and reset for the following click
-          if (Date.now() >= nextBeat){            
-            synth.triggerAttackRelease("C4", "8n");
-            nextBeat = nextBeat + 500;
-            // currentTime = Date.now();
+
+        const metronome = setInterval(function(){
+          // clear the interval if we have reached the end of the num beats
+          if(numBeats >= 32) clearInterval(metronome);
+
+          if(Date.now() >= nextBeat){
+            // synth.triggerAttackRelease("C4", "8n");
+            if(Date.now() !== nextBeat) console.log(Date.now() - nextBeat)
+            nextBeat = nextBeat + 500
             numBeats += 1
-          } 
-        }
+            setters.incrementCount()
+          }
+        }, 1)
 
       })
+
+      
 
       socket.on("test", async data => {
         synth.triggerAttackRelease("C4", "8n");
@@ -68,21 +69,31 @@ const App = () => {
   }, [state.clientID])
 
   
-    const handlePlay = e => {
-      socket.emit("start-performance", {delay: 5000})
-    }
+  
+  const handlePlay = e => {
+    socket.emit("start-performance", {delay: 3000})
+  }
+  
+  const handleSingle = e => {
+    socket.emit("single", {})
+  }
+
+  
 
     return (
       <div className="App">
         Client ID: {state.clientID}
         <SyncUpdate />
-        {/* <Metronome /> */}
+        
         <br/>
         {
-          !!state.latency 
+          !!state.latency
           &&
-        <>Latency: {state.latency}</>
+          <button onClick={handleSingle}>
+            Play Single
+          </button>
         }
+        <br/>
         {
           !!state.latency
           &&
@@ -90,7 +101,10 @@ const App = () => {
             PLAY
           </button>
         }
-        {/* <Ping /> */}
+        <br/>
+
+        <MeasureStats count={state.count}/>
+
       </div>
     );
   

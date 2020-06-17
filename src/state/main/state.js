@@ -5,6 +5,8 @@ const state = {
     latencyPings: [],
     latency: null,
 
+    pitch: "C",
+
     part: null,
 
     count: 0
