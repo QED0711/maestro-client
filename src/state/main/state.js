@@ -1,7 +1,11 @@
 
 const state = {
 
+
     clientID: null,
+    sessionKey: "alpha-test",
+    role: null,
+
     latencyPings: [],
     latency: null,
 

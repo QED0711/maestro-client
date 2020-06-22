@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import logo from './logo.svg';
+
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
+
 import './App.css';
 
 import {mainContext} from './state/main/mainProvider';
@@ -12,6 +14,9 @@ import Ping from './components/Ping';
 import regressor from './helpers/regression';
 import SyncUpdate from './components/SyncUpdate';
 import MeasureStats from './components/MeasureStats';
+import ConductorContainer from './components/ConductorContainer';
+import PlayerContainer from './components/PlayerContainer';
+import Login from './components/Login';
 
 const App = () => {
   const {state, setters, methods} = useContext(mainContext);
@@ -25,11 +30,11 @@ const App = () => {
 
     // setup socket actions here
     if(state.clientID){
-      socket.on(`ping-${state.clientID}`, data => {
+      socket.on(`sync-${state.clientID}`, data => {
         setters.appendLatencyPing({...data, clientTime: Date.now()})
       })
 
-      socket.on(`sync-complete-${state.clientID}`, data => {
+      socket.on(`syncComplete-${state.clientID}`, data => {
         setters.calcAndSetLatency()
         console.log("sync-complete")
       })
@@ -47,7 +52,8 @@ const App = () => {
           if(Date.now() >= nextBeat){
             // synth.triggerAttackRelease("C4", "8n");
             if(Date.now() !== nextBeat) console.log(Date.now() - nextBeat)
-            nextBeat = nextBeat + 500
+            nextBeat = nextBeat + Math.round(60000 / 72) // 100 is the BPM
+            if(numBeats === 4) numBeats = 0;
             numBeats += 1
             setters.incrementCount()
           }
@@ -82,29 +88,19 @@ const App = () => {
 
     return (
       <div className="App">
-        Client ID: {state.clientID}
-        <SyncUpdate />
-        
-        <br/>
-        {
-          !!state.latency
-          &&
-          <button onClick={handleSingle}>
-            Play Single
-          </button>
-        }
-        <br/>
-        {
-          !!state.latency
-          &&
-          <button onClick={handlePlay}>
-            PLAY
-          </button>
-        }
-        <br/>
-
-        <MeasureStats count={state.count}/>
-
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route exact path="/conductor">
+              <ConductorContainer/>
+            </Route>
+            <Route exact path="/player">
+              <PlayerContainer />
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </div>
     );
   

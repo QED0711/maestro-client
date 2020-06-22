@@ -14,7 +14,7 @@ const setters = {
 
     incrementCount(){
         this.setState({
-            count: this.state.count + 1
+            count: this.state.count === 4 ? 1 : this.state.count + 1
         })
     },
 
