@@ -14,7 +14,7 @@ import Ping from './components/Ping';
 import regressor from './helpers/regression';
 import SyncUpdate from './components/SyncUpdate';
 import MeasureStats from './components/MeasureStats';
-import ConductorContainer from './components/ConductorContainer';
+import ConductorContainer from './components/conductor/ConductorContainer';
 import PlayerContainer from './components/PlayerContainer';
 import Login from './components/Login';
 
