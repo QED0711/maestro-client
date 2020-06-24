@@ -7,7 +7,11 @@ const methods = {
 
     getCount(){
         return this.state.count
-    }
+    },
+
+    getPlayActive(){
+        return this.state.playActive
+    },
 }
 
 export default methods;

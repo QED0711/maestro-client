@@ -6,6 +6,8 @@ const state = {
     sessionKey: "alpha-test",
     role: null,
 
+    playActive: false,
+
     latencyPings: [],
     latency: null,
 
