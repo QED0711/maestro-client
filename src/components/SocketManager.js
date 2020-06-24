@@ -4,6 +4,9 @@ import React, { useContext, useEffect } from 'react'
 import { mainContext } from '../state/main/mainProvider'
 import { subscribe } from 'multistate'
 
+// ========================== SYNTH ==========================
+import synth from '../helpers/synth'
+
 import socket from '../helpers/socket'
 
 const SocketManager = ({ children, context }) => {
@@ -37,16 +40,34 @@ const SocketManager = ({ children, context }) => {
                 console.log(data)
                 let {bpm, subdivision, startTime} = data;
 
+                if(methods.getPlayActive()) return // we don't want conflicting metronomes going
+
                 setters.setPlayActive(true)
                 
                 const latency = methods.getLatency()
                 startTime = startTime - latency;
                 let nextBeat = startTime;
 
+                let subCount = 1;
+
                 const metronome = setInterval(() => {
                     if(methods.getPlayActive()){
                         if(Date.now() >= nextBeat){
-                            console.log("HELLO WORLD")
+                            
+                            if(subCount === 1){
+                                console.log("MAIN")
+                                synth.triggerAttackRelease(1000, "32n");
+                            } else {
+                                synth.triggerAttackRelease(1500, "32n");
+                                console.log("SUB")
+                            }
+                            
+                            if(subCount === subdivision){
+                                subCount = 1
+                            } else {
+                                subCount++
+                            }
+
                             nextBeat = nextBeat + (60000 / (bpm * subdivision))
                         }
                     } else {

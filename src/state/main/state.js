@@ -1,6 +1,7 @@
 
 const state = {
 
+    audioContextLoaded: false,
 
     clientID: null,
     sessionKey: "alpha-test",

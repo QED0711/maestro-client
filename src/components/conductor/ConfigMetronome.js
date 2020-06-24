@@ -38,7 +38,7 @@ const ConfigMetronome = () => {
             <br/>
             
             <label htmlFor={"subdivision"}>Subdivision</label>
-            <input id="subdivision" type="number" min="1" max="12" step="1" defaultValue="0" required />
+            <input id="subdivision" type="number" min="1" max="12" step="1" defaultValue="1" required />
             <br/>
             <button onClick={handleStartClick}>Start</button>
             <button onClick={handleStopClick}>Stop</button>

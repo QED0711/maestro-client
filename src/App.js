@@ -22,60 +22,23 @@ import SocketManager from './components/SocketManager';
 const App = () => {
   const { state, setters, methods } = useContext(mainContext);
 
-
-
   useEffect(() => {
-
-    // set the clientID if it has not been set
-    !state.clientID && setters.setClientID(Date.now())
-
-    // setup socket actions here
-    if (state.clientID) {
-      socket.on(`sync-${state.clientID}`, data => {
-        setters.appendLatencyPing({ ...data, clientTime: Date.now() })
-      })
-
-      socket.on(`syncComplete-${state.clientID}`, data => {
-        setters.calcAndSetLatency()
-        console.log("sync-complete")
-      })
-
-      socket.on("play", data => {
-        const latency = methods.getLatency()
-        const startTime = data.startTime - latency;
-        let numBeats = 0;
-        let nextBeat = startTime;
-
-        const metronome = setInterval(function () {
-          // clear the interval if we have reached the end of the num beats
-          if (numBeats >= 32) clearInterval(metronome);
-
-          if (Date.now() >= nextBeat) {
-            // synth.triggerAttackRelease("C4", "8n");
-            if (Date.now() !== nextBeat) console.log(Date.now() - nextBeat)
-            nextBeat = nextBeat + Math.round(60000 / 72) // 100 is the BPM
-            if (numBeats === 4) numBeats = 0;
-            numBeats += 1
-            setters.incrementCount()
-          }
-        }, 1)
-
-      })
-
-
-
-      socket.on("test", async data => {
-        synth.triggerAttackRelease("C4", "8n");
-        console.log({ ...data, clientTime: Date.now() })
-      })
-
+    var context;
+    function init() {
+      try {
+        // Fix up for prefixing
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        context = new AudioContext();
+        console.log("Audio context loaded", context)
+        setters.setAudioContextLoaded(true)
+      }
+      catch (e) {
+        alert('Web Audio API is not supported in this browser');
+      }
     }
-
-
-
-  }, [state.clientID])
-
-
+    init()
+    // window.addEventListener('load', init, false);
+  }, [])
 
   const handlePlay = e => {
     socket.emit("start-performance", { delay: 3000 })
@@ -85,11 +48,15 @@ const App = () => {
     socket.emit("single", {})
   }
 
-
+  const handleInitAudioClick = e => {
+    synth.triggerAttackRelease("C4", "4n");
+  }
 
   return (
     <SocketManager>
       <div className="App">
+        {state.audioContextLoaded && "Audio Context Loaded"}
+        <button onClick={handleInitAudioClick}>Test Audio</button>
         <BrowserRouter>
           <Switch>
             <Route exact path="/">
