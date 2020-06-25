@@ -4,10 +4,14 @@ import React, { useContext, useEffect } from 'react'
 import { mainContext } from '../state/main/mainProvider'
 import { subscribe } from 'multistate'
 
+// ========================== SOCKET ==========================
+import socket from '../helpers/socket'
+
 // ========================== SYNTH ==========================
 import synth from '../helpers/synth'
 
-import socket from '../helpers/socket'
+// =========================== CUE TEST ===========================
+import cueTest from '../cueSchema.json';
 
 const SocketManager = ({ children, context }) => {
 
@@ -33,6 +37,63 @@ const SocketManager = ({ children, context }) => {
 
             socket.on(`execStop-${state.sessionKey}`, data => {
                 setters.setPlayActive(false)
+            })
+
+            // CUE TEST
+            socket.on(`execCue-${state.sessionKey}`, data => {
+                console.log(data)
+                const { cue } = data;
+                const startTime = Date.now() + 1000 // start in 1 second
+
+                setters.setPlayActive(true)
+
+                let nextBeat = startTime;
+
+                let currentMeasure = 0
+                let currentCue;
+
+                let totalTicks;
+                let currentTick = 1;
+
+                
+                const cueInterval = setInterval(() => {
+                    if (methods.getPlayActive()) {
+                        if (Date.now() >= nextBeat) {
+                            currentCue = cueTest.cues[cue][currentMeasure]
+                            totalTicks = currentCue.numBeats * currentCue.subdivision
+
+                            switch(true){
+                                case currentTick === 1: // downbeat
+                                    synth.triggerAttackRelease(500, "32n");
+                                    break;
+                                case currentTick % currentCue.subdivision === 0: // normal beat
+                                    synth.triggerAttackRelease(1000, "32n");
+                                    break;
+                                default: // subdivision
+                                    synth.triggerAttackRelease(1500, "32n");
+                                    // send sub tick
+                                    // increment tick
+                            }
+
+                            nextBeat = nextBeat + (60000 / (currentCue.bpm * currentCue.subdivision))
+
+                            console.log({currentTick, currentMeasure, totalTicks})
+
+                            if(currentTick + 1 > totalTicks){ // we've reached the end of the measure
+                                currentMeasure++     
+                                currentTick = 1                           
+                            } else{
+                                currentTick++
+                            }
+
+                            if(currentMeasure === cueTest.cues[cue].length) clearInterval(cueInterval)
+                            
+                        }
+                    } else {
+                        clearInterval(cueInterval)
+                    }
+
+                }, 1)
             })
 
             // METRONOME
@@ -75,7 +136,7 @@ const SocketManager = ({ children, context }) => {
                             } else {
                                 subCount++
                             }
-                            
+
                             // reset currentBeat if it reaches its max level
                             if (numBeats && currentBeat > numBeats) {
                                 currentBeat = 1

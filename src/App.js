@@ -9,6 +9,8 @@ import { mainContext } from './state/main/mainProvider';
 import socket from './helpers/socket';
 import synth from './helpers/synth'
 
+// =========================== CHILDREN ===========================
+
 import Metronome from './components/Metronome';
 import Ping from './components/Ping';
 import regressor from './helpers/regression';
@@ -18,6 +20,7 @@ import ConductorContainer from './components/conductor/ConductorContainer';
 import PlayerContainer from './components/PlayerContainer';
 import Login from './components/Login';
 import SocketManager from './components/SocketManager';
+
 
 const App = () => {
   const { state, setters, methods } = useContext(mainContext);

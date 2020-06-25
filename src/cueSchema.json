@@ -1,0 +1,26 @@
+{
+    "cues": {
+        "cueA": [
+            {
+                "bpm": 60,
+                "subdivision": 4,
+                "numBeats": 4
+            },
+            {
+                "bpm": 72,
+                "subdivision": 3,
+                "numBeats": 2
+            },
+            {
+                "bpm": 104,
+                "subdivision": 2,
+                "numBeats": 4
+            },
+            {
+                "bpm": 120,
+                "subdivision": 4,
+                "numBeats": 4
+            }            
+        ]
+    }
+}
