@@ -12,7 +12,7 @@ import { Section } from '../ui';
 const ConfigMetronome = () => {
 
     const {state} = useContext(mainContext)
-    const [metered, setMetered] = useState(false)
+    const [metered, setMetered] = useState(true)
 
 
     const handleStartClick = e => {
@@ -22,18 +22,14 @@ const ConfigMetronome = () => {
         bpm = bpm < 1 ? 1 : bpm
         subdivision = subdivision < 1 ? 1 : subdivision
 
-        let meter;
-        if(metered){
-            const numerator = parseInt(document.getElementById("meter-numerator").value)
-            const denominator = parseInt(document.getElementById("meter-denominator").value)
-            meter = [numerator, denominator]
-        } 
+        const numBeats = metered ? parseInt(document.getElementById("num-beats").value) : null
+        
 
         socket.emit("metronome", {
             bpm, 
             subdivision: subdivision,
             sessionKey: state.sessionKey,
-            meter
+            numBeats
         })
     }
 
@@ -57,7 +53,7 @@ const ConfigMetronome = () => {
             <br/>
 
 
-            <input id="metered-checkbox" type="checkbox" onChange={handleMeterToggle} />
+            <input id="metered-checkbox" type="checkbox" onChange={handleMeterToggle} checked={metered}/>
             <label htmlFor={"metered-checkbox"}>Metered</label>
 
             <br/>
@@ -66,9 +62,8 @@ const ConfigMetronome = () => {
                 metered 
                 &&
                 <>
-                <input id="meter-numerator" type="number" min="1" defaultValue="4" step="1" />
-                <br/>
-                <input id="meter-denominator" type="number" min="1" defaultValue="4" step="1" />
+                <label>Beats per Measure</label>
+                <input id="num-beats" type="number" min="1" defaultValue="4" step="1" />
                 <br/>
                 </>
             }

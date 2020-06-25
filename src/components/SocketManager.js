@@ -38,34 +38,47 @@ const SocketManager = ({ children, context }) => {
             // METRONOME
             socket.on(`execMetronome-${state.sessionKey}`, data => {
                 console.log(data)
-                let {bpm, subdivision, startTime} = data;
+                let { bpm, subdivision, startTime, numBeats } = data;
 
-                if(methods.getPlayActive()) return // we don't want conflicting metronomes going
+                if (methods.getPlayActive()) return // we don't want conflicting metronomes going
 
                 setters.setPlayActive(true)
-                
+
                 const latency = methods.getLatency()
                 startTime = startTime - latency;
                 let nextBeat = startTime;
 
                 let subCount = 1;
+                let currentBeat = 1;
 
                 const metronome = setInterval(() => {
-                    if(methods.getPlayActive()){
-                        if(Date.now() >= nextBeat){
-                            
-                            if(subCount === 1){
-                                console.log("MAIN")
-                                synth.triggerAttackRelease(1000, "32n");
-                            } else {
-                                synth.triggerAttackRelease(1500, "32n");
-                                console.log("SUB")
+                    if (methods.getPlayActive()) {
+                        if (Date.now() >= nextBeat) {
+
+
+                            switch (true) {
+                                case subCount !== 1: // subdivision
+                                    synth.triggerAttackRelease(1500, "32n");
+                                    break;
+                                case currentBeat === 1: // downbeat
+                                    synth.triggerAttackRelease(500, "32n");
+                                    break;
+                                case subCount === 1: // normal beat
+                                    synth.triggerAttackRelease(1000, "32n");
+                                    break;
                             }
-                            
-                            if(subCount === subdivision){
-                                subCount = 1
+
+                            // reset subCount if it reaches its max level
+                            if (subCount === subdivision) {
+                                subCount = 1;
+                                currentBeat++
                             } else {
                                 subCount++
+                            }
+                            
+                            // reset currentBeat if it reaches its max level
+                            if (numBeats && currentBeat > numBeats) {
+                                currentBeat = 1
                             }
 
                             nextBeat = nextBeat + (60000 / (bpm * subdivision))
