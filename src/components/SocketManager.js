@@ -41,8 +41,8 @@ const SocketManager = ({ children, context }) => {
 
             // CUE TEST
             socket.on(`execCue-${state.sessionKey}`, data => {
-                console.log(data)
-                const { cue } = data;
+                
+                const { cue, parts } = data;
                 const startTime = Date.now() + 1000 // start in 1 second
 
                 setters.setPlayActive(true)
@@ -53,7 +53,7 @@ const SocketManager = ({ children, context }) => {
                 let currentCue;
 
                 let totalTicks;
-                let currentTick = 1;
+                let currentTick = 0;
 
                 
                 const cueInterval = setInterval(() => {
@@ -63,25 +63,26 @@ const SocketManager = ({ children, context }) => {
                             totalTicks = currentCue.numBeats * currentCue.subdivision
 
                             switch(true){
-                                case currentTick === 1: // downbeat
+                                case currentTick === 0: // downbeat
                                     synth.triggerAttackRelease(500, "32n");
+                                    console.log("DOWNBEAT")
                                     break;
                                 case currentTick % currentCue.subdivision === 0: // normal beat
                                     synth.triggerAttackRelease(1000, "32n");
+                                    console.log("NORMAL")
                                     break;
                                 default: // subdivision
+                                    console.log("SUB")
                                     synth.triggerAttackRelease(1500, "32n");
-                                    // send sub tick
-                                    // increment tick
                             }
 
                             nextBeat = nextBeat + (60000 / (currentCue.bpm * currentCue.subdivision))
 
                             console.log({currentTick, currentMeasure, totalTicks})
 
-                            if(currentTick + 1 > totalTicks){ // we've reached the end of the measure
+                            if(currentTick + 1 === totalTicks){ // we've reached the end of the measure
                                 currentMeasure++     
-                                currentTick = 1                           
+                                currentTick = 0                           
                             } else{
                                 currentTick++
                             }
