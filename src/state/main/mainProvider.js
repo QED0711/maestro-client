@@ -6,7 +6,7 @@ import setters from './setters'
 import methods from './methods'
 
 
-const main = new Multistate(state)
+const main = new Multistate(state, {nestedSetters: true})
 
 main.addCustomSetters(setters)
 main.addMethods(methods)

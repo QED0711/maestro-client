@@ -1,0 +1,23 @@
+
+.beat-tick-container, .sub-tick-container{
+    width: 90vw;
+    margin: 0.5rem auto;
+    
+    display: grid;
+    grid-gap: 0.5rem;
+    
+}
+
+.beat-tick, .sub-tick{
+    display: inline-block;
+
+    height: 2rem;
+    background-color: whitesmoke;
+    box-shadow: 2px 2px 10px grey;
+
+    border-radius: 4px;
+}
+
+.beat-tick-active-true, .sub-tick-active-true{
+    background-color: red;
+}

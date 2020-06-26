@@ -54,6 +54,7 @@ const SocketManager = ({ children, context }) => {
 
                 let totalTicks;
                 let currentTick = 0;
+                let currentBeat = 0;
 
                 
                 const cueInterval = setInterval(() => {
@@ -62,33 +63,39 @@ const SocketManager = ({ children, context }) => {
                             currentCue = cueTest.cues[cue][currentMeasure]
                             totalTicks = currentCue.numBeats * currentCue.subdivision
 
+                            setters.setCueDisplay_numBeats(currentCue.numBeats)
+                            setters.setCueDisplay_numSubdivisions(totalTicks)
+
                             switch(true){
                                 case currentTick === 0: // downbeat
                                     synth.triggerAttackRelease(500, "32n");
-                                    console.log("DOWNBEAT")
+                                    currentBeat++
                                     break;
                                 case currentTick % currentCue.subdivision === 0: // normal beat
                                     synth.triggerAttackRelease(1000, "32n");
-                                    console.log("NORMAL")
+                                    currentBeat++                                    
                                     break;
                                 default: // subdivision
-                                    console.log("SUB")
                                     synth.triggerAttackRelease(1500, "32n");
                             }
 
+                            setters.setCueDisplay_currentMeasure(currentCue.measureNum)
+                            setters.setCueDisplay_currentBeat(currentBeat)
+                            setters.setCueDisplay_currentSubdivision(currentTick + 1)
+
                             nextBeat = nextBeat + (60000 / (currentCue.bpm * currentCue.subdivision))
 
-                            console.log({currentTick, currentMeasure, totalTicks})
+                            // console.log({currentTick, currentMeasure, totalTicks})
 
                             if(currentTick + 1 === totalTicks){ // we've reached the end of the measure
                                 currentMeasure++     
-                                currentTick = 0                           
+                                currentTick = 0     
+                                currentBeat = 0                      
                             } else{
                                 currentTick++
                             }
 
-                            if(currentMeasure === cueTest.cues[cue].length) clearInterval(cueInterval)
-                            
+                            if(currentMeasure === cueTest.cues[cue].length) clearInterval(cueInterval)                            
                         }
                     } else {
                         clearInterval(cueInterval)

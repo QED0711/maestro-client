@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import './App.css';
+import './css/metronome-display.css';
 
 import { mainContext } from './state/main/mainProvider';
 

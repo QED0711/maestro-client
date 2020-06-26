@@ -4,6 +4,8 @@ import { Section } from '../ui';
 import socket from '../../helpers/socket'
 import { mainContext } from '../../state/main/mainProvider';
 
+import CueDisplay from './CueDisplay'
+
 const ConfigCue = () => {
 
     const {state} = useContext(mainContext);
@@ -15,6 +17,7 @@ const ConfigCue = () => {
     return (
         <Section>
             <button onClick={handleCueClick}>Exec Cue</button>
+            <CueDisplay />
         </Section>
     )
 

@@ -12,11 +12,15 @@ const state = {
     latencyPings: [],
     latency: null,
 
-    pitch: "C",
-
-    part: null,
-
-    count: 0
+    cueDisplay: {
+        numBeats: null,
+        numSubdivisions: null,
+        currentMeasure: null,
+        bpm: null,
+        currentBeat: null,
+        currentSubdivision: null,
+        cue: null
+    }
 
 }
 
