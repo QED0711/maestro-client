@@ -55,6 +55,9 @@ const SocketManager = ({ children, context }) => {
                 let totalTicks;
                 let currentTick = 0;
                 let currentBeat = 0;
+                
+                let currentBPM; 
+                let tempoAdjustment;
 
                 
                 const cueInterval = setInterval(() => {
@@ -62,6 +65,9 @@ const SocketManager = ({ children, context }) => {
                         if (Date.now() >= nextBeat) {
                             currentCue = cueTest.cues[cue][currentMeasure]
                             totalTicks = currentCue.numBeats * currentCue.subdivision
+                            
+                            currentBPM = currentBPM || currentCue.bpm // default to cue bpm
+                            tempoAdjustment = currentCue.tempoAdjustment || 0 
 
                             setters.setCueDisplay_numBeats(currentCue.numBeats)
                             setters.setCueDisplay_numSubdivisions(totalTicks)
@@ -70,10 +76,14 @@ const SocketManager = ({ children, context }) => {
                                 case currentTick === 0: // downbeat
                                     synth.triggerAttackRelease(500, "32n");
                                     currentBeat++
+                                    currentBPM = currentBPM + tempoAdjustment
+                                    console.log(currentBPM)
                                     break;
                                 case currentTick % currentCue.subdivision === 0: // normal beat
                                     synth.triggerAttackRelease(1000, "32n");
                                     currentBeat++                                    
+                                    currentBPM = currentBPM + tempoAdjustment
+                                    console.log(currentBPM)
                                     break;
                                 default: // subdivision
                                     synth.triggerAttackRelease(1500, "32n");
@@ -83,9 +93,8 @@ const SocketManager = ({ children, context }) => {
                             setters.setCueDisplay_currentBeat(currentBeat)
                             setters.setCueDisplay_currentSubdivision(currentTick + 1)
 
-                            nextBeat = nextBeat + (60000 / (currentCue.bpm * currentCue.subdivision))
-
-                            // console.log({currentTick, currentMeasure, totalTicks})
+                            nextBeat = nextBeat + (60000 / (currentBPM * currentCue.subdivision))
+                            // debugger
 
                             if(currentTick + 1 === totalTicks){ // we've reached the end of the measure
                                 currentMeasure++     

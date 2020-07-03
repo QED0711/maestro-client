@@ -2,33 +2,35 @@
     "cues": {
         "cueA": [
             {
+                "bpm": 120,
+                "subdivision": 4,
+                "numBeats": 4,
+                "measureNum": 1,
+                "parts": ["*"],
+                "tempoAdjustment": -7.5
+            },
+            {
+                "bpm": 60,
+                "subdivision": 4,
+                "numBeats": 4,
+                "measureNum": 2,
+                "parts": ["*"],
+                "tempoAdjustment": -7.5
+            },
+            {
+                "bpm": 60,
+                "subdivision": 4,
+                "numBeats": 4,
+                "measureNum": 3,
+                "parts": ["*"]
+            },
+            {
                 "bpm": 60,
                 "subdivision": 4,
                 "numBeats": 4,
                 "measureNum": 4,
                 "parts": ["*"]
-            },
-            {
-                "bpm": 72,
-                "subdivision": 3,
-                "numBeats": 2,
-                "measureNum": 5,
-                "parts": ["*"]
-            },
-            {
-                "bpm": 104,
-                "subdivision": 2,
-                "numBeats": 3,
-                "measureNum": 6,
-                "parts": ["*"]
-            },
-            {
-                "bpm": 120,
-                "subdivision": 4,
-                "numBeats": 4,
-                "measureNum": 7,
-                "parts": ["*"]
-            }            
+            }    
         ]
     }
 }
