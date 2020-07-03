@@ -1,4 +1,5 @@
 
+const fs = require("fs");
 
 class Cue {
     constructor(){
@@ -22,18 +23,17 @@ class Cue {
         } else { // if the user just indicated a starting measure
             for(let i = startMeasure; i < startMeasure + repeat; i++){
                 this.cueSheet[cue].push({
+                    parts: ["*"],
+                    measureNum: i,
                     ...measure,
-                    measureNum: i
                 })
             }
         }
 
     }
 
-    save(path){
-        const cueSheet = JSON.stringify(this.cueSheet);
-
-        console.log(cueSheet)
+    save(path="./cueSheet.json"){
+        fs.writeFileSync(path, JSON.stringify(this.cueSheet))
     }
 }
 
@@ -46,7 +46,6 @@ cue.append("cue1", {
     bpm: 60, 
     subdivision: 4,
     numBeats: 4,
-    parts:["*"],
-}, {measures: [1,2,"3a", "3b"], repeat: 4})
+}, {repeat: 10})
 
 cue.save()

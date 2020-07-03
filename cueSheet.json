@@ -1,0 +1,94 @@
+{
+    "cue1": [
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 1
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 2
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 3
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 4
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 5
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 6
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 7
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 8
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 9
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "parts": [
+                "*"
+            ],
+            "measureNum": 10
+        }
+    ]
+}
