@@ -7,7 +7,7 @@
                 "numBeats": 4,
                 "measureNum": 1,
                 "parts": ["*"],
-                "tempoAdjustment": -7.5
+                "tempoAdjustment": -10
             },
             {
                 "bpm": 60,
@@ -15,7 +15,8 @@
                 "numBeats": 4,
                 "measureNum": 2,
                 "parts": ["*"],
-                "tempoAdjustment": -7.5
+                "tempoAdjustment": -10,
+                "stopAdjustment": 2
             },
             {
                 "bpm": 60,

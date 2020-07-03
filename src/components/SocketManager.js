@@ -56,8 +56,9 @@ const SocketManager = ({ children, context }) => {
                 let currentTick = 0;
                 let currentBeat = 0;
                 
-                let currentBPM; 
-                let tempoAdjustment;
+                let currentBPM, 
+                    tempoAdjustment,
+                    stopAdjustment;
 
                 
                 const cueInterval = setInterval(() => {
@@ -68,6 +69,7 @@ const SocketManager = ({ children, context }) => {
                             
                             currentBPM = currentBPM || currentCue.bpm // default to cue bpm
                             tempoAdjustment = currentCue.tempoAdjustment || 0 
+                            stopAdjustment = currentCue.stopAdjustment || currentCue.numBeats + 1
 
                             setters.setCueDisplay_numBeats(currentCue.numBeats)
                             setters.setCueDisplay_numSubdivisions(totalTicks)
@@ -76,13 +78,13 @@ const SocketManager = ({ children, context }) => {
                                 case currentTick === 0: // downbeat
                                     synth.triggerAttackRelease(500, "32n");
                                     currentBeat++
-                                    currentBPM = currentBPM + tempoAdjustment
+                                    if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
                                     console.log(currentBPM)
                                     break;
                                 case currentTick % currentCue.subdivision === 0: // normal beat
                                     synth.triggerAttackRelease(1000, "32n");
                                     currentBeat++                                    
-                                    currentBPM = currentBPM + tempoAdjustment
+                                    if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
                                     console.log(currentBPM)
                                     break;
                                 default: // subdivision
