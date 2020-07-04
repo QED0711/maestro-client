@@ -96,8 +96,9 @@ const SocketManager = ({ children, context }) => {
                             setters.setCueDisplay_currentSubdivision(currentTick + 1)
 
                             nextBeat = nextBeat + (60000 / (currentBPM * currentCue.subdivision))
-                            debugger
+
                             if(currentCue.fermata === currentBeat ){
+                                // because the "nextBeat" is actually the next subdivision tick, we divide the duration of the fermata by how many subdivisions there are in a single beat to get the desired duration over the entire beat. Effectively, each subdivision adds the same time to the beat, and they all add up to the target fermata duration. 
                                 nextBeat += (currentCue.fermataDuration / currentCue.subdivision)
                             } 
 
