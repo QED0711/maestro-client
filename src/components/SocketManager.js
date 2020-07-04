@@ -11,7 +11,8 @@ import socket from '../helpers/socket'
 import synth from '../helpers/synth'
 
 // =========================== CUE TEST ===========================
-import cueTest from '../cueSchema.json';
+// import cueTest from '../cueSchema.json';
+import cueTest from '../generatedCueSheet.json';
 
 const SocketManager = ({ children, context }) => {
 
@@ -60,11 +61,10 @@ const SocketManager = ({ children, context }) => {
                     tempoAdjustment,
                     stopAdjustment;
 
-                
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
                         if (Date.now() >= nextBeat) {
-                            currentCue = cueTest.cues[cue][currentMeasure]
+                            currentCue = cueTest[cue][currentMeasure]
                             totalTicks = currentCue.numBeats * currentCue.subdivision
                             
                             currentBPM = currentBPM || currentCue.bpm // default to cue bpm
@@ -96,7 +96,10 @@ const SocketManager = ({ children, context }) => {
                             setters.setCueDisplay_currentSubdivision(currentTick + 1)
 
                             nextBeat = nextBeat + (60000 / (currentBPM * currentCue.subdivision))
-                            // debugger
+                            debugger
+                            if(currentCue.fermata === currentBeat ){
+                                nextBeat += (currentCue.fermataDuration / currentCue.subdivision)
+                            } 
 
                             if(currentTick + 1 === totalTicks){ // we've reached the end of the measure
                                 currentMeasure++     
@@ -106,7 +109,7 @@ const SocketManager = ({ children, context }) => {
                                 currentTick++
                             }
 
-                            if(currentMeasure === cueTest.cues[cue].length) clearInterval(cueInterval)                            
+                            if(currentMeasure === cueTest[cue].length) clearInterval(cueInterval)                            
                         }
                     } else {
                         clearInterval(cueInterval)

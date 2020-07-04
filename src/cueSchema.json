@@ -1,37 +1,43 @@
 {
-    "cues": {
-        "cueA": [
-            {
-                "bpm": 120,
-                "subdivision": 4,
-                "numBeats": 4,
-                "measureNum": 1,
-                "parts": ["*"],
-                "tempoAdjustment": -10
-            },
-            {
-                "bpm": 60,
-                "subdivision": 4,
-                "numBeats": 4,
-                "measureNum": 2,
-                "parts": ["*"],
-                "tempoAdjustment": -10,
-                "stopAdjustment": 2
-            },
-            {
-                "bpm": 60,
-                "subdivision": 4,
-                "numBeats": 4,
-                "measureNum": 3,
-                "parts": ["*"]
-            },
-            {
-                "bpm": 60,
-                "subdivision": 4,
-                "numBeats": 4,
-                "measureNum": 4,
-                "parts": ["*"]
-            }    
-        ]
-    }
+    "cueA": [
+        {
+            "bpm": 120,
+            "subdivision": 4,
+            "numBeats": 4,
+            "measureNum": 1,
+            "parts": [
+                "*"
+            ],
+            "tempoAdjustment": -10
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "measureNum": 2,
+            "parts": [
+                "*"
+            ],
+            "tempoAdjustment": -10,
+            "stopAdjustment": 2
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "measureNum": 3,
+            "parts": [
+                "*"
+            ]
+        },
+        {
+            "bpm": 60,
+            "subdivision": 4,
+            "numBeats": 4,
+            "measureNum": 4,
+            "parts": [
+                "*"
+            ]
+        }
+    ]
 }
