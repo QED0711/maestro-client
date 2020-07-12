@@ -74,7 +74,7 @@ const SocketManager = ({ children, context }) => {
                             // stopAdjustment = currentCue.stopAdjustment || currentCue.numBeats + 1
 
                             // set the parameters for the metronome display
-                            setters.setCueDisplay_numBeats(currentCue.beats.length)
+                            setters.setCueDisplay_numBeats(currentCue.beats)
                             setters.setCueDisplay_numSubdivisions(measureTicks)
 
 
@@ -96,7 +96,7 @@ const SocketManager = ({ children, context }) => {
 
                             // set current state of the beat and subdivision counts
                             setters.setCueDisplay_currentMeasure(currentCue.measureNum)
-                            setters.setCueDisplay_currentBeat(currentBeat)
+                            setters.setCueDisplay_currentBeat(currentBeat - 1)
                             setters.setCueDisplay_currentSubdivision(currentTick)
 
 
