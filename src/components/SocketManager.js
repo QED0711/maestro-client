@@ -53,9 +53,10 @@ const SocketManager = ({ children, context }) => {
                 let currentMeasure = 0
                 let currentCue;
 
-                let totalTicks;
-                let currentTick = 0;
-                let currentBeat = 0;
+                let measureTicks;
+                let currentTick = 1;
+                let currentBeat = 1;
+                let mainBeats;
                 
                 let currentBPM, 
                     tempoAdjustment,
@@ -63,49 +64,53 @@ const SocketManager = ({ children, context }) => {
 
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
-                        if (Date.now() >= nextBeat) {
+                        if (Date.now() >= nextBeat) { 
+
                             currentCue = cueTest[cue][currentMeasure]
-                            totalTicks = currentCue.numBeats * currentCue.subdivision
-                            
-                            currentBPM = currentBPM || currentCue.bpm // default to cue bpm
-                            tempoAdjustment = currentCue.tempoAdjustment || 0 
-                            stopAdjustment = currentCue.stopAdjustment || currentCue.numBeats + 1
+                            measureTicks = currentCue.totalTicks
 
-                            setters.setCueDisplay_numBeats(currentCue.numBeats)
-                            setters.setCueDisplay_numSubdivisions(totalTicks)
+                            // currentBPM = currentBPM || currentCue.bpm // default to cue bpm
+                            // tempoAdjustment = currentCue.tempoAdjustment || 0 
+                            // stopAdjustment = currentCue.stopAdjustment || currentCue.numBeats + 1
 
+                            // set the parameters for the metronome display
+                            setters.setCueDisplay_numBeats(currentCue.beats.length)
+                            setters.setCueDisplay_numSubdivisions(measureTicks)
+
+
+                            // beat cases
                             switch(true){
-                                case currentTick === 0: // downbeat
-                                    synth.triggerAttackRelease(500, "32n");
+                                case currentTick === 1: // first beat = 1
+                                    synth.triggerAttackRelease(500, "32n"); // downbeat
+                                    synth.triggerAttackRelease(1000, "32n"); // normal beat
                                     currentBeat++
-                                    if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
-                                    console.log(currentBPM)
+                                    // if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
                                     break;
-                                case currentTick % currentCue.subdivision === 0: // normal beat
+                                case currentCue.beats.includes(currentTick): // normal beat
                                     synth.triggerAttackRelease(1000, "32n");
                                     currentBeat++                                    
-                                    if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
-                                    console.log(currentBPM)
                                     break;
                                 default: // subdivision
                                     synth.triggerAttackRelease(1500, "32n");
                             }
 
+                            // set current state of the beat and subdivision counts
                             setters.setCueDisplay_currentMeasure(currentCue.measureNum)
                             setters.setCueDisplay_currentBeat(currentBeat)
-                            setters.setCueDisplay_currentSubdivision(currentTick + 1)
+                            setters.setCueDisplay_currentSubdivision(currentTick)
 
-                            nextBeat = nextBeat + (60000 / (currentBPM * currentCue.subdivision))
+
+                            nextBeat = nextBeat + (60000 / currentCue.subBPM)
 
                             if(currentCue.fermata === currentBeat ){
                                 // because the "nextBeat" is actually the next subdivision tick, we divide the duration of the fermata by how many subdivisions there are in a single beat to get the desired duration over the entire beat. Effectively, each subdivision adds the same time to the beat, and they all add up to the target fermata duration. 
                                 nextBeat += (currentCue.fermataDuration / currentCue.subdivision)
                             } 
 
-                            if(currentTick + 1 === totalTicks){ // we've reached the end of the measure
+                            if(currentTick === measureTicks){ // we've reached the end of the measure
                                 currentMeasure++     
-                                currentTick = 0     
-                                currentBeat = 0                      
+                                currentTick = 1     
+                                currentBeat = 1                      
                             } else{
                                 currentTick++
                             }

@@ -101,6 +101,6 @@ cue.append("cueA", { bpm: 60, subdivision: 4, numBeats: 4 }, { repeat: 2 })
 
 // cue.addTempoAdjustment("cueA", 60, 104, { numBeats: 15, startMeasure: 4 })
 
-cue.addFermata("cueA", {measure: 1, beat: 3, duration: 4000})
+// cue.addFermata("cueA", {measure: 1, beat: 3, duration: 4000})
 
 cue.save("./src/generatedCueSheet.json")
