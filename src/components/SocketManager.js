@@ -48,7 +48,7 @@ const SocketManager = ({ children, context }) => {
 
                 setters.setPlayActive(true)
 
-                let nextBeat = startTime;
+                let nextTick = startTime;
 
                 let currentMeasure = 0
                 let currentCue;
@@ -56,7 +56,7 @@ const SocketManager = ({ children, context }) => {
                 let measureTicks;
                 let currentTick = 1;
                 let currentBeat = 1;
-                let mainBeats;
+
                 
                 let currentBPM, 
                     tempoAdjustment,
@@ -64,19 +64,20 @@ const SocketManager = ({ children, context }) => {
 
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
-                        if (Date.now() >= nextBeat) { 
+                        if (Date.now() >= nextTick) { 
 
                             currentCue = cueTest[cue][currentMeasure]
                             measureTicks = currentCue.totalTicks
 
-                            // currentBPM = currentBPM || currentCue.bpm // default to cue bpm
-                            // tempoAdjustment = currentCue.tempoAdjustment || 0 
-                            // stopAdjustment = currentCue.stopAdjustment || currentCue.numBeats + 1
+                            tempoAdjustment = currentCue.tempoAdjustment || 0 
+                            stopAdjustment = currentCue.stopAdjustment || measureTicks
+
+
+                            currentBPM = !tempoAdjustment ? currentCue.subBPM : currentBPM ? currentBPM : currentCue.subBPM
 
                             // set the parameters for the metronome display
                             setters.setCueDisplay_numBeats(currentCue.beats)
                             setters.setCueDisplay_numSubdivisions(measureTicks)
-
 
                             // beat cases
                             switch(true){
@@ -84,7 +85,6 @@ const SocketManager = ({ children, context }) => {
                                     synth.triggerAttackRelease(500, "32n"); // downbeat
                                     synth.triggerAttackRelease(1000, "32n"); // normal beat
                                     currentBeat++
-                                    // if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
                                     break;
                                 case currentCue.beats.includes(currentTick): // normal beat
                                     synth.triggerAttackRelease(1000, "32n");
@@ -93,21 +93,27 @@ const SocketManager = ({ children, context }) => {
                                 default: // subdivision
                                     synth.triggerAttackRelease(1500, "32n");
                             }
+                            
+                            // tempo adjustments are locked at the beat level (not subdivision)
+                            if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
+                            console.log(currentBPM)
 
                             // set current state of the beat and subdivision counts
                             setters.setCueDisplay_currentMeasure(currentCue.measureNum)
                             setters.setCueDisplay_currentBeat(currentBeat - 1)
                             setters.setCueDisplay_currentSubdivision(currentTick)
+                            setters.setCueDisplay_bpm(currentBPM)
 
+                            nextTick = nextTick + (60000 / currentBPM)
 
-                            nextBeat = nextBeat + (60000 / currentCue.subBPM)
 
                             if(currentCue.fermata === currentBeat ){
-                                // because the "nextBeat" is actually the next subdivision tick, we divide the duration of the fermata by how many subdivisions there are in a single beat to get the desired duration over the entire beat. Effectively, each subdivision adds the same time to the beat, and they all add up to the target fermata duration. 
-                                nextBeat += (currentCue.fermataDuration / currentCue.subdivision)
+                                // because the "nextTick" is actually the next subdivision tick, we divide the duration of the fermata by how many subdivisions there are in a single beat to get the desired duration over the entire beat. Effectively, each subdivision adds the same time to the beat, and they all add up to the target fermata duration. 
+                                nextTick += (currentCue.fermataDuration / currentCue.subdivision)
                             } 
 
-                            if(currentTick === measureTicks){ // we've reached the end of the measure
+                            if(currentTick === measureTicks){ // we've reached the end of the measure, reset
+                                if(currentMeasure.stopAdjustment) currentBPM = null;
                                 currentMeasure++     
                                 currentTick = 1     
                                 currentBeat = 1                      
