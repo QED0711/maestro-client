@@ -7,6 +7,20 @@ class Cue {
         this.cueSheet = {};
     }
 
+    static genMeasure(subBPM = 120, division = [2, 2, 2, 2]) {
+        let beats = [1,];
+
+        for (let i = 0; i < division.length - 1; i++) {
+            beats[i + 1] = beats[i] + division[i]
+        }
+
+        return {
+            subBPM,
+            beats,
+            totalTicks: division.reduce((a, b) => a + b)
+        }
+    }
+
     append(cue, measure, options) {
         let { repeat, startMeasure, measures } = options;
         repeat = repeat || 1;
@@ -34,7 +48,7 @@ class Cue {
     }
 
 
-    addTempoAdjustment(cue, fromTempo, toTempo, options = {}) {
+    addTempoAdjustment(cue, fromTempo, toTempo, overNumTicks, options = {}) {
 
         /* 
         This method mutates the instance's cueSheet to add tempo adjustments
@@ -42,43 +56,42 @@ class Cue {
 
         // 1. get the cue list 
         cue = this.cueSheet[cue]
-        let { startMeasure, numBeats } = options;
+        let { startMeasure } = options;
 
         // 3a. initialization
         startMeasure = startMeasure ? startMeasure - 1 : 0;
-        numBeats = numBeats || 1;
 
         // 3b. Calculate the total change and the per-beat change
         const totalChange = toTempo - fromTempo;
-        const adjustment = totalChange / numBeats;
-                
-        let beatsLeft = numBeats;
+        const adjustment = totalChange / overNumTicks;
+
+        let ticksLeft = overNumTicks;
 
         // 4. apply tempo adjustments to appropriate measures
-        for (let [i, measure] of Object.entries(cue)){
-            
+        for (let [i, measure] of Object.entries(cue)) {
+
             // haven't reached the target start measure yet, continue
-            if(i < startMeasure) continue;
+            if (i < startMeasure) continue;
 
             // if there are still beats to adjust...
-            if(beatsLeft >= measure.numBeats){
+            if (ticksLeft >= measure.totalTicks) {
                 measure.tempoAdjustment = adjustment
-                beatsLeft -= measure.numBeats
+                ticksLeft -= measure.totalTicks
             } else {
                 measure.tempoAdjustment = adjustment
-                measure.stopAdjustment = beatsLeft;
-                beatsLeft = 0;
+                measure.stopAdjustment = ticksLeft;
+                ticksLeft = 0;
             }
 
             // if we have adjusted all beats
-            if(beatsLeft === 0) break;
+            if (ticksLeft === 0) break;
         }
     }
 
-    addFermata(cue, options={}) {
+    addFermata(cue, options = {}) {
         cue = this.cueSheet[cue]
 
-        const {measure, beat, duration} = options;
+        const { measure, beat, duration } = options;
 
         cue[measure - 1].fermata = beat
         cue[measure - 1].fermataDuration = duration
@@ -95,12 +108,52 @@ class Cue {
 
 const cue = new Cue();
 
-cue.append("cueA", { bpm: 60, subdivision: 4, numBeats: 4 }, { repeat: 2 })
-// cue.append("cueA", { bpm: 60, subdivision: 4, numBeats: 2 }, { repeat: 2 })
-// cue.append("cueA", { bpm: 60, subdivision: 4, numBeats: 4 }, { repeat: 5 })
+// cue.append("cueA", { subBPM: 120, beats: [1, 3, 5, 7], totalTicks: 8 }, { repeat: 4 })
+cue.append("cueA", Cue.genMeasure(240, [3, 3]), {measureNum: 1})
+cue.append("cueA", Cue.genMeasure(240, [3, 2, 2]), {measureNum: 2})
 
-// cue.addTempoAdjustment("cueA", 60, 104, { numBeats: 15, startMeasure: 4 })
+// cue.addTempoAdjustment("cueA", 120, 240, 12, { startMeasure: 1 })
 
-// cue.addFermata("cueA", {measure: 1, beat: 3, duration: 4000})
+
+
 
 cue.save("./src/generatedCueSheet.json")
+
+// console.log(Cue.genMeasure(120, [3,3,2]))
+
+
+/*
+{
+    "cueA": [
+        {
+            "parts": [
+                "*"
+            ],
+            "measureNum": 1,
+            "subBPM": 240,
+            "beats": [1, 5, 9, 13],
+            "totalTicks": 16,
+            "tempoAdjustment": 0.75
+        },
+        {
+            "parts": [
+                "*"
+            ],
+            "measureNum": 2,
+            "subBPM": 240,
+            "beats": [1, 5, 9, 13],
+            "totalTicks": 16,
+            "tempoAdjustment": 0.75
+        },
+        {
+            "parts": [
+                "*"
+            ],
+            "measureNum": 3,
+            "subBPM": 144,
+            "beats": [1, 3, 5, 7],
+            "totalTicks": 8
+        }
+    ]
+}
+*/
