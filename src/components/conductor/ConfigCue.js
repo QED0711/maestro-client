@@ -5,6 +5,7 @@ import socket from '../../helpers/socket'
 import { mainContext } from '../../state/main/mainProvider';
 
 import CueDisplay from './CueDisplay'
+import PlayerCues from './PlayerCues';
 
 const ConfigCue = () => {
 
@@ -18,6 +19,7 @@ const ConfigCue = () => {
         <Section>
             <button onClick={handleCueClick}>Exec Cue</button>
             <CueDisplay />
+            <PlayerCues />
         </Section>
     )
 

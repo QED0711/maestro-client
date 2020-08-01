@@ -27,11 +27,11 @@ const ConductorContainer = () => {
             <div id="conductor-container" className="container">
                 <TabButton handleClick={handleTabChange("metronome")}>
                     Metronome
-            </TabButton>
+                </TabButton>
 
                 <TabButton handleClick={handleTabChange("cue")}>
                     Cue Sheet
-            </TabButton>
+                </TabButton>
 
 
                 {tab === "metronome" && <ConfigMetronome />}

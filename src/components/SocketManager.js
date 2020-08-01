@@ -130,6 +130,24 @@ const SocketManager = ({ children, context }) => {
                 }, 1)
             })
 
+
+
+            // ================================== PLAYER CUES ==================================
+            socket.on(`execPlayerCue-${state.sessionKey}`, data => {
+                const player = methods.getPlayer();
+
+                if(player === data.player) setters.setPlayerCued(true)
+            })
+            
+            socket.on(`execPlayerCueStop-${state.sessionKey}`, data => {
+                const player = methods.getPlayer();
+    
+                if(player === data.player) setters.setPlayerCued(false)
+                
+            })
+
+
+
             // METRONOME
             socket.on(`execMetronome-${state.sessionKey}`, data => {
                 console.log(data)

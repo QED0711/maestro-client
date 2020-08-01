@@ -20,7 +20,12 @@ const state = {
         currentBeat: null,
         currentSubdivision: null,
         cue: null
-    }
+    },
+
+    player: null,
+    playerCued: false,
+
+    activeCues: []
 
 }
 

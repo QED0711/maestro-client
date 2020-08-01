@@ -3,6 +3,9 @@ import {Redirect} from 'react-router-dom';
 
 // =============================== STATE ===============================
 import { mainContext } from '../state/main/mainProvider';
+import CueDisplay from './conductor/CueDisplay';
+import CueReceiver from './player/CueReceiver';
+import PlayerSelection from './player/PlayerSelection';
 
 const PlayerContainer = () => {
 
@@ -15,9 +18,14 @@ const PlayerContainer = () => {
     return state.role === "player"
     ?
     (
-        <div id="player-container" className="container">
-            PLAYER CONTAINER
-        </div>
+        state.player 
+        ? (
+            <div id="player-container" className="container">
+                <CueDisplay />
+                <CueReceiver />
+            </div>
+        )
+        : <PlayerSelection />
     )
     :
     <Redirect to="/" />

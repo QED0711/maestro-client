@@ -4,6 +4,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import './App.css';
 import './css/metronome-display.css';
+import './css/conductor-panel.css';
+import './css/player-panel.css';
 
 import { mainContext } from './state/main/mainProvider';
 
