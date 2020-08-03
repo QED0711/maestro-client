@@ -9,15 +9,20 @@ import PlayerCues from './PlayerCues';
 
 const ConfigCue = () => {
 
-    const {state} = useContext(mainContext);
+    const {state, setters, methods} = useContext(mainContext);
 
     const handleCueClick = e => {
-        socket.emit("playCue", {sessionKey: state.sessionKey, cue: "cueA"})
+        socket.emit("playCue", {sessionKey: state.sessionKey, cue: "cueA", delay: state.cueDelay})
+    }
+
+    const handleDelayChange = e => {
+        setters.setCueDelay(parseInt(e.target.value))
     }
 
     return (
         <Section>
             <button onClick={handleCueClick}>Exec Cue</button>
+            <input type="number" value={state.cueDelay} onChange={handleDelayChange}/>
             <CueDisplay />
             <PlayerCues />
         </Section>

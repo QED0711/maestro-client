@@ -14,6 +14,10 @@ const methods = {
         this.setters.setActiveCues(currentActiveCues)
     },
 
+    getRole(){
+        return this.state.role
+    },
+
     getLatency(){
         return this.state.latency
     },
@@ -33,6 +37,10 @@ const methods = {
     getActiveCues(){
         return this.state.activeCues
     },
+
+    getCueDelay(){
+        return this.state.cueDelay
+    }
 
 
 }

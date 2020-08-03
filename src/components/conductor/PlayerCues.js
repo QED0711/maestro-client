@@ -21,18 +21,32 @@ const PlayerCues = () => {
         const playerCueActive = methods.getActiveCues().includes(player)
 
         playerCueActive
-            ? socket.emit("cue_player_stop", { player, sessionKey: state.sessionKey })   
+            ? socket.emit("cue_player_stop", { player, sessionKey: state.sessionKey })
             : socket.emit("cue_player", { player, sessionKey: state.sessionKey })
-            
+
         methods.adjustActiveCues(player)
+    }
+
+    const handlePlayerRightClick = player => e => {
+        e.preventDefault();
+
+        socket.emit("ping_player", {player, sessionKey: state.sessionKey})
     }
 
     // HELPERS
     const renderCueButtons = (players) => {
         return players.map((player, i) => {
-            return <button className={`player-cue-button player-cue-button-active-${state.activeCues.includes(player)}`} onClick={handlePlayerClick(player)}>
-                {player}
-            </button>
+            return (
+                <button
+                    className={`player-cue-button player-cue-button-active-${state.activeCues.includes(player)}`}
+                    onClick={handlePlayerClick(player)}
+                    onContextMenu={handlePlayerRightClick(player)}
+                >
+                    {player}
+                    <br/>
+                    {state.playerDelays[player]}
+                </button>
+            )
         })
     }
 

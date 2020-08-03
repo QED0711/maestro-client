@@ -40,11 +40,42 @@ const SocketManager = ({ children, context }) => {
                 setters.setPlayActive(false)
             })
 
+
+            socket.on(`execPingPlayer-${state.sessionKey}`, data => {
+                
+                if(data.player === methods.getPlayer()){
+                    const latency = methods.getLatency()
+                    const currentTime = Date.now()
+
+                    const timeReceived = currentTime + latency
+                    const player = methods.getPlayer()
+
+                    socket.emit("report_player_ping_received", {
+                        sessionKey: state.sessionKey, 
+                        timeSent: data.time,
+                        timeReceived,
+                        player,
+                        latency
+                    })
+                }
+            })
+
+
+            socket.on(`execReportPlayerPing-${state.sessionKey}`, data => {
+                if(methods.getRole() === "conductor"){
+                    console.log(data)
+                    const {player, delay, roundtrip} = data
+                    setters.setPlayerDelay(player, roundtrip)
+                }
+            })
+
+
+
             // CUE TEST
             socket.on(`execCue-${state.sessionKey}`, data => {
                 
                 const { cue, parts } = data;
-                const startTime = Date.now() + 1000 // start in 1 second
+                const startTime = Date.now() + data.delay // start in 1 second
 
                 setters.setPlayActive(true)
 

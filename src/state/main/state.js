@@ -12,6 +12,10 @@ const state = {
     latencyPings: [],
     latency: null,
 
+    playerDelays: {},
+
+    cueDelay: 2000,
+
     cueDisplay: {
         numBeats: null,
         numSubdivisions: null,

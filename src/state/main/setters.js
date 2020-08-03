@@ -18,6 +18,13 @@ const setters = {
         })
     },
 
+    setPlayerDelay(player, roundtrip){
+        const playerDelays = {...this.state.playerDelays};
+        playerDelays[player] = roundtrip;
+
+        this.setState({playerDelays})
+    }
+
 }
 
 export default setters;
