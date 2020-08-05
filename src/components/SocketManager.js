@@ -42,8 +42,8 @@ const SocketManager = ({ children, context }) => {
 
 
             socket.on(`execPingPlayer-${state.sessionKey}`, data => {
-                
-                if(data.player === methods.getPlayer()){
+
+                if (data.player === methods.getPlayer()) {
                     const latency = methods.getLatency()
                     const currentTime = Date.now()
 
@@ -51,7 +51,7 @@ const SocketManager = ({ children, context }) => {
                     const player = methods.getPlayer()
 
                     socket.emit("report_player_ping_received", {
-                        sessionKey: state.sessionKey, 
+                        sessionKey: state.sessionKey,
                         timeSent: data.time,
                         timeReceived,
                         player,
@@ -62,9 +62,9 @@ const SocketManager = ({ children, context }) => {
 
 
             socket.on(`execReportPlayerPing-${state.sessionKey}`, data => {
-                if(methods.getRole() === "conductor"){
+                if (methods.getRole() === "conductor") {
                     console.log(data)
-                    const {player, delay, roundtrip} = data
+                    const { player, delay, roundtrip } = data
                     setters.setPlayerDelay(player, roundtrip)
                 }
             })
@@ -73,34 +73,41 @@ const SocketManager = ({ children, context }) => {
 
             // CUE TEST
             socket.on(`execCue-${state.sessionKey}`, data => {
-                
-                const { cue, parts } = data;
+
+                let { cue, parts, startMeasure, repeatStart = 0, tempoShift = 1 } = data;
                 const startTime = Date.now() + data.delay // start in 1 second
 
                 setters.setPlayActive(true)
 
+                // variable initialization
                 let nextTick = startTime;
 
-                let currentMeasure = 0
                 let currentCue;
 
                 let measureTicks;
                 let currentTick = 1;
                 let currentBeat = 1;
 
-                
-                let currentBPM, 
+                // find the appropriate starting measure
+                let currentMeasure = 0 // array index
+
+                if (startMeasure) {
+                    // we use "==" because we do want it to handle a conversion between strings and nums if necessary
+                    currentMeasure = cueTest[cue].findIndex(measure => measure.measureNum == startMeasure);
+                }
+
+                let currentBPM,
                     tempoAdjustment,
                     stopAdjustment;
 
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
-                        if (Date.now() >= nextTick) { 
+                        if (Date.now() >= nextTick) {
 
                             currentCue = cueTest[cue][currentMeasure]
                             measureTicks = currentCue.totalTicks
 
-                            tempoAdjustment = currentCue.tempoAdjustment || 0 
+                            tempoAdjustment = currentCue.tempoAdjustment || 0
                             stopAdjustment = currentCue.stopAdjustment || measureTicks
 
 
@@ -111,7 +118,7 @@ const SocketManager = ({ children, context }) => {
                             setters.setCueDisplay_numSubdivisions(measureTicks)
 
                             // beat cases
-                            switch(true){
+                            switch (true) {
                                 case currentTick === 1: // first beat = 1
                                     synth.triggerAttackRelease(500, "32n"); // downbeat
                                     synth.triggerAttackRelease(1000, "32n"); // normal beat
@@ -119,14 +126,14 @@ const SocketManager = ({ children, context }) => {
                                     break;
                                 case currentCue.beats.includes(currentTick): // normal beat
                                     synth.triggerAttackRelease(1000, "32n");
-                                    currentBeat++                                    
+                                    currentBeat++
                                     break;
                                 default: // subdivision
                                     synth.triggerAttackRelease(1500, "32n");
                             }
-                            
+
                             // tempo adjustments are locked at the beat level (not subdivision)
-                            if(currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
+                            if (currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
                             console.log(currentBPM)
 
                             // set current state of the beat and subdivision counts
@@ -135,24 +142,26 @@ const SocketManager = ({ children, context }) => {
                             setters.setCueDisplay_currentSubdivision(currentTick)
                             setters.setCueDisplay_bpm(currentBPM)
 
-                            nextTick = nextTick + (60000 / currentBPM)
+                            nextTick = nextTick + ((60000 / currentBPM) / tempoShift)
 
 
-                            if(currentCue.fermata === currentBeat ){
+                            if (currentCue.fermata === currentBeat) {
                                 // because the "nextTick" is actually the next subdivision tick, we divide the duration of the fermata by how many subdivisions there are in a single beat to get the desired duration over the entire beat. Effectively, each subdivision adds the same time to the beat, and they all add up to the target fermata duration. 
                                 nextTick += (currentCue.fermataDuration / currentCue.subdivision)
-                            } 
+                            }
 
-                            if(currentTick === measureTicks){ // we've reached the end of the measure, reset
-                                if(currentMeasure.stopAdjustment) currentBPM = null;
-                                currentMeasure++     
-                                currentTick = 1     
-                                currentBeat = 1                      
-                            } else{
+                            if (currentTick === measureTicks) { // we've reached the end of the measure, reset
+                                if (currentMeasure.stopAdjustment) currentBPM = null;
+                                // only progress to next measure if repeatStart is 0
+                                repeatStart === 0 ? currentMeasure++ : repeatStart--
+                                
+                                currentTick = 1
+                                currentBeat = 1
+                            } else {
                                 currentTick++
                             }
 
-                            if(currentMeasure === cueTest[cue].length) clearInterval(cueInterval)                            
+                            if (currentMeasure === cueTest[cue].length) clearInterval(cueInterval)
                         }
                     } else {
                         clearInterval(cueInterval)
@@ -167,14 +176,14 @@ const SocketManager = ({ children, context }) => {
             socket.on(`execPlayerCue-${state.sessionKey}`, data => {
                 const player = methods.getPlayer();
 
-                if(player === data.player) setters.setPlayerCued(true)
+                if (player === data.player) setters.setPlayerCued(true)
             })
-            
+
             socket.on(`execPlayerCueStop-${state.sessionKey}`, data => {
                 const player = methods.getPlayer();
-    
-                if(player === data.player) setters.setPlayerCued(false)
-                
+
+                if (player === data.player) setters.setPlayerCued(false)
+
             })
 
 

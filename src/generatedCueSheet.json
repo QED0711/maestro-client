@@ -1,1 +1,29 @@
-{"cueA":[{"parts":["*"],"measureNum":1,"subBPM":240,"beats":[1,4],"totalTicks":6},{"parts":["*"],"measureNum":1,"subBPM":240,"beats":[1,4,6],"totalTicks":7}]}
+{
+    "cueA": [
+        {
+            "parts": [
+                "*"
+            ],
+            "measureNum": 1,
+            "subBPM": 240,
+            "beats": [
+                1,
+                4
+            ],
+            "totalTicks": 6
+        },
+        {
+            "parts": [
+                "*"
+            ],
+            "measureNum": 2,
+            "subBPM": 240,
+            "beats": [
+                1,
+                4,
+                6
+            ],
+            "totalTicks": 7
+        }
+    ]
+}

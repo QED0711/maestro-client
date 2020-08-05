@@ -6,23 +6,15 @@ import { mainContext } from '../../state/main/mainProvider';
 
 import CueDisplay from './CueDisplay'
 import PlayerCues from './PlayerCues';
+import CueForm from './CueForm';
 
 const ConfigCue = () => {
 
-    const {state, setters, methods} = useContext(mainContext);
-
-    const handleCueClick = e => {
-        socket.emit("playCue", {sessionKey: state.sessionKey, cue: "cueA", delay: state.cueDelay})
-    }
-
-    const handleDelayChange = e => {
-        setters.setCueDelay(parseInt(e.target.value))
-    }
+    // const {state, setters, methods} = useContext(mainContext);
 
     return (
         <Section>
-            <button onClick={handleCueClick}>Exec Cue</button>
-            <input type="number" value={state.cueDelay} onChange={handleDelayChange}/>
+            <CueForm />
             <CueDisplay />
             <PlayerCues />
         </Section>
