@@ -22,9 +22,9 @@ class Cue {
     }
 
     append(cue, measure, options) {
-        let { repeat, startMeasure, measures } = options;
+        let { repeat, measureNum, measures } = options;
         repeat = repeat || 1;
-        startMeasure = startMeasure || 1;
+        measureNum = measureNum || 1;
 
 
         this.cueSheet[cue] = this.cueSheet[cue] || []; // initialize the cue if not already added
@@ -36,7 +36,7 @@ class Cue {
             }
 
         } else { // if the user just indicated a starting measure
-            for (let i = startMeasure; i < startMeasure + repeat; i++) {
+            for (let i = measureNum; i < measureNum + repeat; i++) {
                 this.cueSheet[cue].push({
                     parts: ["*"],
                     measureNum: i,
@@ -110,7 +110,8 @@ const cue = new Cue();
 
 // cue.append("cueA", { subBPM: 120, beats: [1, 3, 5, 7], totalTicks: 8 }, { repeat: 4 })
 cue.append("cueA", Cue.genMeasure(240, [3, 3]), {measureNum: 1})
-cue.append("cueA", Cue.genMeasure(240, [3, 2, 2]), {measureNum: 2})
+cue.append("cueA", Cue.genMeasure(240, [3, 2, 2]), {measureNum: 2, repeat: 5})
+cue.append("cueA", Cue.genMeasure(240, [2, 2, 2, 2]), {measureNum: 7, repeat: 3})
 
 // cue.addTempoAdjustment("cueA", 120, 240, 12, { startMeasure: 1 })
 

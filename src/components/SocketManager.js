@@ -74,9 +74,9 @@ const SocketManager = ({ children, context }) => {
             // CUE TEST
             socket.on(`execCue-${state.sessionKey}`, data => {
 
-                let { cue, parts, startMeasure, repeatStart = 0, tempoShift = 1 } = data;
+                let { cue, startMeasure, repeatStart = 0, tempoShift = 1 } = data;
                 const startTime = Date.now() + data.delay // start in 1 second
-
+                console.log(data)
                 setters.setPlayActive(true)
 
                 // variable initialization
@@ -134,7 +134,6 @@ const SocketManager = ({ children, context }) => {
 
                             // tempo adjustments are locked at the beat level (not subdivision)
                             if (currentBeat <= stopAdjustment) currentBPM = currentBPM + tempoAdjustment
-                            console.log(currentBPM)
 
                             // set current state of the beat and subdivision counts
                             setters.setCueDisplay_currentMeasure(currentCue.measureNum)
