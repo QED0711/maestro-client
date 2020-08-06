@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import socket from '../../helpers/socket';
 import { mainContext } from '../../state/main/mainProvider';
 
@@ -43,8 +43,9 @@ const PlayerCues = () => {
                         className={`player-cue-button player-cue-button-active-${state.activeCues.includes(player)}`}
                         onClick={handlePlayerClick(player)}
                         onContextMenu={handlePlayerRightClick(player)}
+                        data-hotkey={i + 1}
                     >
-                        {player}
+                        {player} ({i + 1})
                         <br />
                         {state.playerDelays[player]}
                     </button>
@@ -56,6 +57,19 @@ const PlayerCues = () => {
             )
         })
     }
+
+    useEffect(() => {
+
+        window.onkeydown = e => {
+            const playerCues = document.getElementsByClassName("player-cue-button")
+            for(let btn of playerCues){
+                if(btn.dataset.hotkey === e.key){
+                    btn.click()
+                }
+            }
+        }
+
+    }, [])
 
     return (
         <div id="player-cues">
