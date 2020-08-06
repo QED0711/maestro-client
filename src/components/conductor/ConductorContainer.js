@@ -14,7 +14,7 @@ const ConductorContainer = () => {
 
     const { state, setters } = useContext(mainContext);
 
-    const [tab, setTab] = useState("metronome")
+    const [tab, setTab] = useState("cue")
 
 
     const handleTabChange = tab => e => {
@@ -34,8 +34,8 @@ const ConductorContainer = () => {
                 </TabButton>
 
 
-                {tab === "metronome" && <ConfigMetronome />}
                 {tab === "cue" && <ConfigCue />}
+                {tab === "metronome" && <ConfigMetronome />}
 
             </div>
         )

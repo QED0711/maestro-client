@@ -30,33 +30,35 @@ const PlayerCues = () => {
     const handlePlayerRightClick = player => e => {
         e.preventDefault();
 
-        socket.emit("ping_player", {player, sessionKey: state.sessionKey})
+        socket.emit("ping_player", { player, sessionKey: state.sessionKey })
     }
 
     // HELPERS
     const renderCueButtons = (players) => {
         return players.map((player, i) => {
             return (
-                <button
-                    className={`player-cue-button player-cue-button-active-${state.activeCues.includes(player)}`}
-                    onClick={handlePlayerClick(player)}
-                    onContextMenu={handlePlayerRightClick(player)}
-                >
-                    {player}
+                <div className="player-cue-container" key={player}>
+
+                    <button
+                        className={`player-cue-button player-cue-button-active-${state.activeCues.includes(player)}`}
+                        onClick={handlePlayerClick(player)}
+                        onContextMenu={handlePlayerRightClick(player)}
+                    >
+                        {player}
+                        <br />
+                        {state.playerDelays[player]}
+                    </button>
+
                     <br/>
-                    {state.playerDelays[player]}
-                </button>
+
+                    <input className="player-adjusted-delay" type="number" data-player={player} step="1" defaultValue="0" max="99000" min="-99000" />
+                </div>
             )
         })
     }
 
     return (
         <div id="player-cues">
-
-            {/* <button className="player-cue-button" onClick={handlePlayerClick("clarinet")} >Clarinet</button>
-            <button className="player-cue-button" onClick={handlePlayerClick("violin")} >Violin</button>
-            <button className="player-cue-button" onClick={handlePlayerClick("cello")} >Cello</button>
-            <button className="player-cue-button" onClick={handlePlayerClick("piano")} >Piano</button> */}
             {renderCueButtons(PLAYERS)}
 
         </div>

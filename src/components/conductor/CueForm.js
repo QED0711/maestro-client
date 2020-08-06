@@ -13,13 +13,26 @@ const CueForm = () => {
     const [repeatStart, setRepeatStart] = useState(0)
     const [tempoShift, setTempoShift] = useState(1)
 
+    
+    
     // EVENTS
-    const handleCueClick = e => {
+    const handleCueSubmit = e => {
         e.preventDefault()
+        console.log("SUBMITTED")
+        
+        // get delay adjustments for the individual player so we can pass that information to the socket server
+        const playerDelays = document.getElementsByClassName("player-adjusted-delay")
+        
+        const delayAdjustments = {}
+        for (let pd of playerDelays){
+            delayAdjustments[pd.dataset.player] = parseInt(pd.value)
+        }
+        
         socket.emit("playCue", {
             sessionKey: state.sessionKey, 
             cue, 
             delay: cueDelay * 1000, 
+            delayAdjustments,
             startMeasure, 
             repeatStart,
             tempoShift
@@ -51,7 +64,8 @@ const CueForm = () => {
     }
 
     return (
-        <form id="cue-form" onSubmit={handleCueClick}>
+        <>
+        <form id="cue-form" onSubmit={handleCueSubmit}>
             
             <label>Cue ID</label><br/>
             <input type="text" value={cue} onChange={handleCueChange}/>
@@ -70,8 +84,9 @@ const CueForm = () => {
             <br/>
             
             <input type="submit" value="Execute Cue" />
-            <button onDoubleClick={handleStopClick}>Stop</button>
         </form>
+        <button onDoubleClick={handleStopClick}>Stop</button>
+        </>
     )
 
 }

@@ -3,3 +3,18 @@
     background-color: navy;
     color: white;
 }
+
+.player-cue-container{
+    display: inline-block;
+    margin: 0 1rem;
+
+    font-size: 1.5rem;
+}
+
+.player-cue-button{
+    font-size: inherit;
+}
+
+.player-adjusted-delay{
+    font-size: inherit;
+}

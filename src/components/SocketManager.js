@@ -74,8 +74,10 @@ const SocketManager = ({ children, context }) => {
             // CUE TEST
             socket.on(`execCue-${state.sessionKey}`, data => {
 
-                let { cue, startMeasure, repeatStart = 0, tempoShift = 1 } = data;
-                const startTime = Date.now() + data.delay // start in 1 second
+                let { cue, startMeasure,  delay, delayAdjustments, repeatStart = 0, tempoShift = 1,} = data;
+                const player = methods.getPlayer();
+
+                const startTime = player ? Date.now() + delay + delayAdjustments[player] : Date.now() + delay
                 console.log(data)
                 setters.setPlayActive(true)
 

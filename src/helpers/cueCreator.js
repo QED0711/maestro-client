@@ -109,6 +109,25 @@ class Cue {
 const cue = new Cue();
 
 // cue.append("cueA", { subBPM: 120, beats: [1, 3, 5, 7], totalTicks: 8 }, { repeat: 4 })
+
+/* 
+.append(
+    cue id <string>
+    measure <Cue.genMeasure>
+    options: {
+        measureNum <int>, 
+        measures <array: int || string>, 
+        repeat <int>
+    }
+)
+*/
+
+/* 
+Cue.genMeasure(
+    subdivision tempo <int>
+    beat division <array: int>
+)
+ */
 cue.append("cueA", Cue.genMeasure(240, [3, 3]), {measureNum: 1})
 cue.append("cueA", Cue.genMeasure(240, [3, 2, 2]), {measureNum: 2, repeat: 5})
 cue.append("cueA", Cue.genMeasure(240, [2, 2, 2, 2]), {measureNum: 7, repeat: 3})
@@ -120,7 +139,6 @@ cue.append("cueA", Cue.genMeasure(240, [2, 2, 2, 2]), {measureNum: 7, repeat: 3}
 
 cue.save("./src/generatedCueSheet.json")
 
-// console.log(Cue.genMeasure(120, [3,3,2]))
 
 
 /*
