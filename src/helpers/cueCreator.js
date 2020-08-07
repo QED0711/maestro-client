@@ -128,11 +128,24 @@ Cue.genMeasure(
     beat division <array: int>
 )
  */
-cue.append("cueA", Cue.genMeasure(240, [3, 3]), {measureNum: 1})
-cue.append("cueA", Cue.genMeasure(240, [3, 2, 2]), {measureNum: 2, repeat: 5})
-cue.append("cueA", Cue.genMeasure(240, [2, 2, 2, 2]), {measureNum: 7, repeat: 3})
+cue.append("A", Cue.genMeasure(116, [2,2,2,2]), {measureNum: 1, repeat: 6})
 
-// cue.addTempoAdjustment("cueA", 120, 240, 12, { startMeasure: 1 })
+// add fermata here for measure 7
+
+cue.append("B", Cue.genMeasure(144, [3,3,3]), {measureNum: 8, repeat: 2})
+cue.append("B", Cue.genMeasure(180, [3,3,3]), {measureNum: 10, repeat: 2})
+cue.append("B", Cue.genMeasure(180, [3,3]), {measureNum: 12})
+cue.append("B", Cue.genMeasure(180, [3,2,3]), {measureNum: 13})
+cue.append("B", Cue.genMeasure(180, [3,3]), {measureNum: 14})
+cue.append("B", Cue.genMeasure(180, [3,3,2]), {measureNum: 15})
+cue.append("B", Cue.genMeasure(180, [3,3,3]), {measureNum: 16, repeat: 2})
+cue.append("B", Cue.genMeasure(180, [3,2,3]), {measureNum: 18})
+cue.append("B", Cue.genMeasure(180, [3,3,3,2]), {measureNum: 19, repeat: 3})
+
+
+
+
+cue.addTempoAdjustment("B", 144, 180, 36, { startMeasure: 1 })
 
 
 
