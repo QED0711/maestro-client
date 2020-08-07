@@ -83,9 +83,9 @@ const CueForm = () => {
             <input type="number" value={tempoShift} onChange={handleTempoShiftChange} step="0.01"/>
             <br/>
             
-            <input type="submit" value="Execute Cue" />
+            <input id="execute-cue-btn" type="submit" value="Execute Cue" />
         </form>
-        <button onDoubleClick={handleStopClick}>Stop</button>
+        <button id="stop-cue-btn" onClick={handleStopClick}>Stop</button>
         </>
     )
 

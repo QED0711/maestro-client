@@ -8,6 +8,7 @@ const state = {
     role: null,
 
     playActive: false,
+    isMuted: false,
 
     latencyPings: [],
     latency: null,

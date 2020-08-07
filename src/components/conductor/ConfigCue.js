@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
 import { Section } from '../ui';
 
 import socket from '../../helpers/socket'

@@ -23,6 +23,7 @@ import ConductorContainer from './components/conductor/ConductorContainer';
 import PlayerContainer from './components/PlayerContainer';
 import Login from './components/Login';
 import SocketManager from './components/SocketManager';
+import AudioControls from './components/AudioControls';
 
 
 const App = () => {
@@ -44,25 +45,49 @@ const App = () => {
     }
     init()
     // window.addEventListener('load', init, false);
+
+    window.onkeydown = e => {
+
+      
+      try{
+        if (e.ctrlKey) {
+          if (e.key === "e") {
+            e.preventDefault()
+            document.getElementById("execute-cue-btn").click()
+          }
+          if (e.key === " " || e.key === "s") {
+            e.preventDefault()
+            document.getElementById("stop-cue-btn").click()
+          }
+          if(e.key === "m"){
+            document.getElementById("mute-btn").click()
+          }
+        }
+  
+        // player cues hotkeys
+        const playerCues = document.getElementsByClassName("player-cue-button")
+        for (let btn of playerCues) {
+          if (btn.dataset.hotkey === e.key) {
+            btn.click()
+            break;
+          }
+        }
+      } catch(err){
+        // do nothing
+      }
+
+
+    }
+
   }, [])
 
-  const handlePlay = e => {
-    socket.emit("start-performance", { delay: 3000 })
-  }
 
-  const handleSingle = e => {
-    socket.emit("single", {})
-  }
 
-  const handleInitAudioClick = e => {
-    synth.triggerAttackRelease("C4", "4n");
-  }
 
   return (
     <SocketManager>
       <div className="App">
-        {state.audioContextLoaded && "Audio Context Loaded"}
-        <button onClick={handleInitAudioClick}>Test Audio</button>
+        <AudioControls />
         <BrowserRouter>
           <Switch>
             <Route exact path="/">

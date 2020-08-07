@@ -58,19 +58,6 @@ const PlayerCues = () => {
         })
     }
 
-    useEffect(() => {
-
-        window.onkeydown = e => {
-            const playerCues = document.getElementsByClassName("player-cue-button")
-            for(let btn of playerCues){
-                if(btn.dataset.hotkey === e.key){
-                    btn.click()
-                }
-            }
-        }
-
-    }, [])
-
     return (
         <div id="player-cues">
             {renderCueButtons(PLAYERS)}

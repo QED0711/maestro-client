@@ -30,6 +30,10 @@ const methods = {
         return this.state.playActive
     },
 
+    getIsMuted(){
+        return this.state.isMuted
+    },
+
     getPlayer(){
         return this.state.player
     },

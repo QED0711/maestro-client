@@ -106,6 +106,8 @@ const SocketManager = ({ children, context }) => {
                     if (methods.getPlayActive()) {
                         if (Date.now() >= nextTick) {
 
+                            const isMuted = methods.getIsMuted();
+
                             currentCue = cueTest[cue][currentMeasure]
                             measureTicks = currentCue.totalTicks
 
@@ -122,16 +124,16 @@ const SocketManager = ({ children, context }) => {
                             // beat cases
                             switch (true) {
                                 case currentTick === 1: // first beat = 1
-                                    synth.triggerAttackRelease(500, "32n"); // downbeat
-                                    synth.triggerAttackRelease(1000, "32n"); // normal beat
+                                    !isMuted && synth.triggerAttackRelease(500, "32n"); // downbeat
+                                    // synth.triggerAttackRelease(1000, "32n"); // normal beat
                                     currentBeat++
                                     break;
                                 case currentCue.beats.includes(currentTick): // normal beat
-                                    synth.triggerAttackRelease(1000, "32n");
+                                    !isMuted && synth.triggerAttackRelease(1000, "32n");
                                     currentBeat++
                                     break;
                                 default: // subdivision
-                                    synth.triggerAttackRelease(1500, "32n");
+                                    !isMuted && synth.triggerAttackRelease(1500, "32n");
                             }
 
                             // tempo adjustments are locked at the beat level (not subdivision)
