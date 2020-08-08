@@ -58,8 +58,11 @@ class Cue {
         cue = this.cueSheet[cue]
         let { startMeasure } = options;
 
+
         // 3a. initialization
-        startMeasure = startMeasure ? startMeasure - 1 : 0;
+        // The user puts in the measure number, and we find the index of the cue that corresponds
+        startMeasure = cue.findIndex(measure => measure.measureNum === startMeasure);
+        startMeasure = startMeasure ? startMeasure : 0;
 
         // 3b. Calculate the total change and the per-beat change
         const totalChange = toTempo - fromTempo;
@@ -128,64 +131,90 @@ Cue.genMeasure(
     beat division <array: int>
 )
  */
-cue.append("A", Cue.genMeasure(116, [2,2,2,2]), {measureNum: 1, repeat: 6})
+
+
+/* 
+:::::::::::
+:: CUE A ::
+:::::::::::
+*/
+cue.append("A", Cue.genMeasure(116, [2, 2]), { measureNum: "PREP"})
+cue.append("A", Cue.genMeasure(116, [2, 2, 2, 2]), { measureNum: 1, repeat: 6 })
 
 // add fermata here for measure 7
 
-cue.append("B", Cue.genMeasure(144, [3,3,3]), {measureNum: 8, repeat: 2})
-cue.append("B", Cue.genMeasure(180, [3,3,3]), {measureNum: 10, repeat: 2})
-cue.append("B", Cue.genMeasure(180, [3,3]), {measureNum: 12})
-cue.append("B", Cue.genMeasure(180, [3,2,3]), {measureNum: 13})
-cue.append("B", Cue.genMeasure(180, [3,3]), {measureNum: 14})
-cue.append("B", Cue.genMeasure(180, [3,3,2]), {measureNum: 15})
-cue.append("B", Cue.genMeasure(180, [3,3,3]), {measureNum: 16, repeat: 2})
-cue.append("B", Cue.genMeasure(180, [3,2,3]), {measureNum: 18})
-cue.append("B", Cue.genMeasure(180, [3,3,3,2]), {measureNum: 19, repeat: 3})
+/* 
+:::::::::::
+:: CUE B ::
+:::::::::::
+*/
+cue.append("B", Cue.genMeasure(144, [3, 3]), { measureNum: "PREP"})
+cue.append("B", Cue.genMeasure(144, [3, 3, 3]), { measureNum: 8, repeat: 2 })
+cue.append("B", Cue.genMeasure(180, [3, 3, 3]), { measureNum: 10, repeat: 2 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 12 })
+cue.append("B", Cue.genMeasure(180, [3, 2, 3]), { measureNum: 13 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 14 })
+cue.append("B", Cue.genMeasure(180, [3, 3, 2]), { measureNum: 15 })
+cue.append("B", Cue.genMeasure(180, [3, 3, 3]), { measureNum: 16, repeat: 2 })
+cue.append("B", Cue.genMeasure(180, [3, 2, 3]), { measureNum: 18 })
+cue.append("B", Cue.genMeasure(180, [3, 3, 3, 2]), { measureNum: 19, repeat: 3 })
+cue.append("B", Cue.genMeasure(180, [3, 2, 3]), { measureNum: 22 })
+cue.append("B", Cue.genMeasure(180, [3, 2, 2]), { measureNum: 23 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 24 })
+cue.append("B", Cue.genMeasure(180, [3, 2]), { measureNum: 25 })
+cue.append("B", Cue.genMeasure(180, [3, 3, 3, 2]), { measureNum: 26, repeat: 2 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 28, repeat: 4 })
+cue.append("B", Cue.genMeasure(180, [2, 3, 2, 3]), { measureNum: 32 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 33 })
+// accelerando
+cue.append("B", Cue.genMeasure(180, [3, 3, 3]), { measureNum: 34 })
+cue.append("B", Cue.genMeasure(216, [3, 3, 3]), { measureNum: 35 })
+cue.append("B", Cue.genMeasure(216, [3, 3]), { measureNum: 36, repeat: 9 })
+cue.append("B", Cue.genMeasure(216, [3, 3, 2]), { measureNum: 45, })
+cue.append("B", Cue.genMeasure(216, [3, 3]), { measureNum: 46, repeat: 4 })
+// ritardando
+cue.append("B", Cue.genMeasure(216, [3, 3, 3]), { measureNum: 50 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 51 })
+cue.append("B", Cue.genMeasure(180, [3, 3, 2]), { measureNum: 52 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 53 })
+cue.append("B", Cue.genMeasure(180, [3, 3, 3]), { measureNum: 54 })
+// ritardando
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 55 })
+cue.append("B", Cue.genMeasure(180, [3, 2]), { measureNum: 56 })
+cue.append("B", Cue.genMeasure(180, [3, 3]), { measureNum: 57, repeat: 4 })
+
+// CUE B TEMPO ADJUSTMENTS
+
+cue.addTempoAdjustment("B", 144, 180, 18, { startMeasure: 8 })
+cue.addTempoAdjustment("B", 180, 216, 9, { startMeasure: 34 })
+cue.addTempoAdjustment("B", 216, 180, 9, { startMeasure: 50 })
+cue.addTempoAdjustment("B", 180, 144, 35, { startMeasure: 55 })
+
+/* 
+:::::::::::
+:: CUE C ::
+:::::::::::
+*/
+
+cue.append("C", Cue.genMeasure(116, [2,2]), {measureNum: "PREP"})
+// ritardando
+cue.append("C", Cue.genMeasure(116, [2,2,2,2]), {measureNum: 62, repeat: 7 })
+cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 69, repeat: 16 })
+// accelerando
+cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 85, repeat: 2 })
+cue.append("C", Cue.genMeasure(144, [2,2,2,2]), {measureNum: 87, repeat: 17 })
+// ritardando
+cue.append("C", Cue.genMeasure(144, [2,2,2,2]), {measureNum: 104, repeat: 5 })
+cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 108, repeat: 5 })
+// ritardando
+cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 114, repeat: 3 })
+cue.append("C", Cue.genMeasure(96, [2,2,2,2]), {measureNum: 117, repeat: 3 })
 
 
-
-
-cue.addTempoAdjustment("B", 144, 180, 36, { startMeasure: 1 })
-
-
-
+// CUE C TEMPO ADJUSTMENTS
+cue.addTempoAdjustment("C", 116, 96, 28, { startMeasure: 65 })
+cue.addTempoAdjustment("C", 120, 144, 16, { startMeasure: 85 })
+cue.addTempoAdjustment("C", 144, 120, 40, { startMeasure: 104 })
+cue.addTempoAdjustment("C", 120, 96, 24, { startMeasure: 114 })
 
 cue.save("./src/generatedCueSheet.json")
-
-
-
-/*
-{
-    "cueA": [
-        {
-            "parts": [
-                "*"
-            ],
-            "measureNum": 1,
-            "subBPM": 240,
-            "beats": [1, 5, 9, 13],
-            "totalTicks": 16,
-            "tempoAdjustment": 0.75
-        },
-        {
-            "parts": [
-                "*"
-            ],
-            "measureNum": 2,
-            "subBPM": 240,
-            "beats": [1, 5, 9, 13],
-            "totalTicks": 16,
-            "tempoAdjustment": 0.75
-        },
-        {
-            "parts": [
-                "*"
-            ],
-            "measureNum": 3,
-            "subBPM": 144,
-            "beats": [1, 3, 5, 7],
-            "totalTicks": 8
-        }
-    ]
-}
-*/
