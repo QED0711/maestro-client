@@ -11,7 +11,11 @@ const CueDisplay = () => {
         beats = beats || [1]
         return new Array(beats.length).fill(1).map((beat, i) => {
             return (
-                <div key={i} className={`beat-tick beat-tick-active-${currentBeat - 1 === i}`}></div>
+                <div 
+                    key={i} 
+                    className={`beat-tick beat-tick-active-${currentBeat - 1 === i} prep-beat-${state.cueDisplay.currentMeasure === "PREP"}`}
+                >                    
+                </div>
             )
         })
     }
@@ -19,7 +23,11 @@ const CueDisplay = () => {
     const genSubTicks = (numSubTicks, currentSub) => {
         return new Array(numSubTicks).fill(1).map((sub, i) => {
             return (
-                <div key={i} className={`sub-tick sub-tick-active-${currentSub === i + 1}`}></div>
+                <div 
+                    key={i} 
+                    className={`sub-tick sub-tick-active-${currentSub === i + 1} prep-beat-${state.cueDisplay.currentMeasure === "PREP"}`}
+                >                    
+                </div>
             )
         })
     }

@@ -48,9 +48,11 @@ const App = () => {
 
     window.onkeydown = e => {
 
-      
-      try{
+
+      try {
         if (e.ctrlKey) {
+          
+          
           if (e.key === "e") {
             e.preventDefault()
             document.getElementById("execute-cue-btn").click()
@@ -59,22 +61,24 @@ const App = () => {
             e.preventDefault()
             document.getElementById("stop-cue-btn").click()
           }
-          if(e.key === "m"){
+          if (e.key === "m") {
             document.getElementById("mute-btn").click()
           }
-        }
-  
-        // player cues hotkeys
-        const playerCues = document.getElementsByClassName("player-cue-button")
-        for (let btn of playerCues) {
-          if (btn.dataset.hotkey === e.key) {
-            btn.click()
-            break;
+          
+          
+          // player cues hotkeys
+          const playerCues = document.getElementsByClassName("player-cue-button")
+          for (let btn of playerCues) {
+            if (btn.dataset.hotkey === e.key) {
+              btn.click()
+              break;
+            }
           }
         }
-      } catch(err){
+      } catch (err) {
         // do nothing
       }
+
 
 
     }

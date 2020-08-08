@@ -10,14 +10,22 @@
 
 .beat-tick, .sub-tick{
     display: inline-block;
+    
+    box-sizing: border-box;
 
     height: 2rem;
     background-color: whitesmoke;
     box-shadow: 2px 2px 10px grey;
 
+    border: 1px solid black;
     border-radius: 4px;
 }
 
 .beat-tick-active-true, .sub-tick-active-true{
-    background-color: red;
+    background-color: #27d803;
+    border: 2px solid black;
+}
+
+.prep-beat-true{
+    background-color: rgb(235, 22, 22);
 }
