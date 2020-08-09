@@ -13,7 +13,7 @@ const CueDisplay = () => {
             return (
                 <div 
                     key={i} 
-                    className={`beat-tick beat-tick-active-${currentBeat - 1 === i} prep-beat-${state.cueDisplay.currentMeasure === "PREP"}`}
+                    className={`beat-tick beat-tick-active-${currentBeat - 1 === i} prep-beat-active-${state.cueDisplay.currentMeasure === "PREP" && currentBeat - 1 === i}`}
                 >                    
                 </div>
             )
@@ -25,7 +25,7 @@ const CueDisplay = () => {
             return (
                 <div 
                     key={i} 
-                    className={`sub-tick sub-tick-active-${currentSub === i + 1} prep-beat-${state.cueDisplay.currentMeasure === "PREP"}`}
+                    className={`sub-tick sub-tick-active-${currentSub === i + 1} prep-beat-active-${state.cueDisplay.currentMeasure === "PREP" && currentSub - 1 === i}`}
                 >                    
                 </div>
             )

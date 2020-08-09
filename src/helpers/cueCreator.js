@@ -210,11 +210,19 @@ cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 108, repeat: 5 })
 cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 114, repeat: 3 })
 cue.append("C", Cue.genMeasure(96, [2,2,2,2]), {measureNum: 117, repeat: 3 })
 
-
 // CUE C TEMPO ADJUSTMENTS
 cue.addTempoAdjustment("C", 116, 96, 28, { startMeasure: 65 })
 cue.addTempoAdjustment("C", 120, 144, 16, { startMeasure: 85 })
 cue.addTempoAdjustment("C", 144, 120, 40, { startMeasure: 104 })
 cue.addTempoAdjustment("C", 120, 96, 24, { startMeasure: 114 })
+
+
+/* 
+:::::::::::::::::::::::
+:: CUE CONFIGURATION ::
+:::::::::::::::::::::::
+*/
+cue.append("configuration", Cue.genMeasure(352, [4,4,4,4]), {measureNum: 1, repeat: 100})
+
 
 cue.save("./src/generatedCueSheet.json")

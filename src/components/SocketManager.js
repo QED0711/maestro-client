@@ -96,12 +96,14 @@ const SocketManager = ({ children, context }) => {
                 if (startMeasure) {
                     // we use "==" because we do want it to handle a conversion between strings and nums if necessary
                     currentMeasure = cueTest[cue].findIndex(measure => measure.measureNum == startMeasure);
+                    currentMeasure = currentMeasure >= 0 ? currentMeasure : 0;
                 }
 
                 let currentBPM,
                     tempoAdjustment,
                     stopAdjustment;
 
+                
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
                         if (Date.now() >= nextTick) {
