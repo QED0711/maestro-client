@@ -76,13 +76,15 @@ const SocketManager = ({ children, context }) => {
 
                 let { cue, startMeasure,  delay, delayAdjustments, repeatStart = 0, tempoShift = 1,} = data;
                 const player = methods.getPlayer();
+                const latency = methods.getLatency();
 
                 const startTime = player ? Date.now() + delay + delayAdjustments[player] : Date.now() + delay
-                console.log(data)
+                console.log(Date.now(), startTime)
+                // console.log(data)
                 setters.setPlayActive(true)
 
                 // variable initialization
-                let nextTick = startTime;
+                let nextTick = startTime - latency;
 
                 let currentCue;
 
