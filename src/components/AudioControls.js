@@ -23,6 +23,9 @@ const AudioControls = () => {
     return (
         <div id="audio-controls">
             {state.audioContextLoaded && "Audio Context Loaded"}
+            <br/>
+            {state.latency && `${state.latency}`}
+            <br/>
             <button onClick={handleInitAudioClick}>Test Audio</button>
             <button id="mute-btn" className={`is-muted-${state.isMuted}`} onClick={handleMuteClick}>
                 {state.isMuted ? "Unmute" : "Mute"}

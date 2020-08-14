@@ -26,7 +26,17 @@ const SocketManager = ({ children, context }) => {
         // setup socket actions here
         if (state.clientID) {
 
+            // custom ping interval
+            setInterval(() => {
+                socket.emit("client-ping", {clientID: state.clientID})
+            }, 2000)
+
+            socket.on(`time-pong-${state.clientID}`, data => {
+                setters.appendLatencyPing({serverTime: data.time, clientTime: Date.now()})
+            })
+
             socket.on(`sync-${state.clientID}`, data => {
+                console.log("FIRED")
                 setters.appendLatencyPing({ ...data, clientTime: Date.now() })
             })
 
@@ -36,6 +46,8 @@ const SocketManager = ({ children, context }) => {
             })
 
 
+
+            // STOP METRONOME
             socket.on(`execStop-${state.sessionKey}`, data => {
                 setters.setPlayActive(false)
             })

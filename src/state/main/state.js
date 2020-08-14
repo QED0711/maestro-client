@@ -11,6 +11,8 @@ const state = {
     isMuted: false,
 
     latencyPings: [],
+    runningLatencySum: 0,
+    numLatencyPings: 0,
     latency: null,
 
     playerDelays: {},

@@ -2,7 +2,13 @@
 const setters = {
 
     appendLatencyPing(dataPoint){
-        this.setters.setLatencyPings([...this.state.latencyPings, dataPoint])
+        let {runningLatencySum, numLatencyPings} = this.state;
+        
+        numLatencyPings += 1;
+        runningLatencySum += dataPoint.serverTime - dataPoint.clientTime;
+        const latency = Math.round(runningLatencySum / numLatencyPings)
+        this.setState({runningLatencySum, numLatencyPings, latency})
+        // this.setters.setLatencyPings([...this.state.latencyPings, dataPoint])
     },
 
     calcAndSetLatency(){
