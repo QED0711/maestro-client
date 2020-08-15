@@ -17,7 +17,7 @@ const PlayerCues = () => {
 
     const { state, setters, methods } = useContext(mainContext);
     
-
+    const [selectedPlayerChart, setSelectedPlayerChart] = useState(null)
     // EVENTS
     const handlePlayerClick = player => e => {
         const playerCueActive = methods.getActiveCues().includes(player)
@@ -31,7 +31,7 @@ const PlayerCues = () => {
 
     const handlePlayerRightClick = player => e => {
         e.preventDefault();
-
+        setSelectedPlayerChart(player)
         socket.emit("ping_player", { player, sessionKey: state.sessionKey })
     }
 
@@ -67,7 +67,7 @@ const PlayerCues = () => {
     return (
         <div id="player-cues">
             {renderCueButtons(PLAYERS)}
-            {!!state.playerLatencyPings && <PlayerLatencyChart closeChart={handleCloseChart} />}
+            {!!state.playerLatencyPings && <PlayerLatencyChart closeChart={handleCloseChart} selectedPlayer={selectedPlayerChart} />}
         </div>
     )
 

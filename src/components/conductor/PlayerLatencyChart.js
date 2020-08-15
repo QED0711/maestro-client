@@ -1,9 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { mainContext } from '../../state/main/mainProvider';
 
+// ============================== SOCKET ==============================
+import socket from '../../helpers/socket';
+
+// ============================== CHILDREN ==============================
 import {LineChart} from 'react-easy-chart';
 
-const PlayerLatencyChart = ({closeChart}) => {
+const PlayerLatencyChart = ({closeChart, selectedPlayer}) => {
 
     const {state} = useContext(mainContext);
     const [hoveredPoint, setHoveredPoint] = useState(null)
@@ -18,8 +22,14 @@ const PlayerLatencyChart = ({closeChart}) => {
         setHoveredPoint(d.y)
     }
 
+    const handleResetClick = e => {
+        socket.emit("reset_player", {player: selectedPlayer, sessionKey: state.sessionKey})
+        closeChart()
+    }
+
     return (
         <div className="player-latency-chart">
+            <h3>{selectedPlayer}</h3>
             <LineChart 
                 data={[formatData(state.playerLatencyPings)]}
                 dataPoints
@@ -31,6 +41,7 @@ const PlayerLatencyChart = ({closeChart}) => {
             {hoveredPoint}
             <br/>
             <button onClick={closeChart}>Close</button>
+            <button onClick={handleResetClick}>Rest</button>
         </div>
     )
 

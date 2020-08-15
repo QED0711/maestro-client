@@ -29,7 +29,7 @@ const SocketManager = ({ children, context }) => {
             // custom ping interval
             setInterval(() => {
                 socket.emit("client-ping", {clientID: state.clientID})
-            }, 1000)
+            }, 5000)
 
             socket.on(`time-pong-${state.clientID}`, data => {
                 // setters.appendLatencyPing({serverTime: data.time, clientTime: Date.now()})
@@ -82,6 +82,11 @@ const SocketManager = ({ children, context }) => {
                     const { player, roundtrip, latencyPings } = data
                     setters.setPlayerLatencyInfo({player, roundtrip, playerLatencyPings: latencyPings})
                 }
+            })
+
+            socket.on(`execResetPlayer-${state.sessionKey}`, data => {
+                const player = methods.getPlayer()
+                data.player === player && setters.resetLatency()
             })
 
 
