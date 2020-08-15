@@ -29,7 +29,7 @@ const SocketManager = ({ children, context }) => {
             // custom ping interval
             setInterval(() => {
                 socket.emit("client-ping", {clientID: state.clientID})
-            }, 2000)
+            }, 1000)
 
             socket.on(`time-pong-${state.clientID}`, data => {
                 // setters.appendLatencyPing({serverTime: data.time, clientTime: Date.now()})
@@ -58,6 +58,7 @@ const SocketManager = ({ children, context }) => {
 
                 if (data.player === methods.getPlayer()) {
                     const latency = methods.getLatency()
+                    const latencyPings = methods.getLatencyPings()
                     const currentTime = Date.now()
 
                     const timeReceived = currentTime + latency
@@ -68,7 +69,8 @@ const SocketManager = ({ children, context }) => {
                         timeSent: data.time,
                         timeReceived,
                         player,
-                        latency
+                        latency,
+                        latencyPings
                     })
                 }
             })
@@ -77,8 +79,8 @@ const SocketManager = ({ children, context }) => {
             socket.on(`execReportPlayerPing-${state.sessionKey}`, data => {
                 if (methods.getRole() === "conductor") {
                     console.log(data)
-                    const { player, delay, roundtrip } = data
-                    setters.setPlayerDelay(player, roundtrip)
+                    const { player, roundtrip, latencyPings } = data
+                    setters.setPlayerLatencyInfo({player, roundtrip, playerLatencyPings: latencyPings})
                 }
             })
 

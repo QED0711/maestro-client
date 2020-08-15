@@ -1,7 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import socket from '../../helpers/socket';
 import { mainContext } from '../../state/main/mainProvider';
 
+
+import PlayerLatencyChart from './PlayerLatencyChart';
 
 const PLAYERS = [
     "clarinet",
@@ -13,8 +15,8 @@ const PLAYERS = [
 
 const PlayerCues = () => {
 
-    const { state, methods } = useContext(mainContext);
-
+    const { state, setters, methods } = useContext(mainContext);
+    
 
     // EVENTS
     const handlePlayerClick = player => e => {
@@ -31,6 +33,10 @@ const PlayerCues = () => {
         e.preventDefault();
 
         socket.emit("ping_player", { player, sessionKey: state.sessionKey })
+    }
+
+    const handleCloseChart = e => {
+        setters.setPlayerLatencyPings(null)
     }
 
     // HELPERS
@@ -61,7 +67,7 @@ const PlayerCues = () => {
     return (
         <div id="player-cues">
             {renderCueButtons(PLAYERS)}
-
+            {!!state.playerLatencyPings && <PlayerLatencyChart closeChart={handleCloseChart} />}
         </div>
     )
 

@@ -26,6 +26,8 @@ const AudioControls = () => {
             <br/>
             {state.latency && `${state.latency}`}
             <br/>
+            {state.latencyVariance && `${state.latencyVariance.toFixed(5)}`}
+            <br/>
             <button onClick={handleInitAudioClick}>Test Audio</button>
             <button id="mute-btn" className={`is-muted-${state.isMuted}`} onClick={handleMuteClick}>
                 {state.isMuted ? "Unmute" : "Mute"}

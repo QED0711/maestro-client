@@ -1,13 +1,27 @@
+const getVariance = (data, mean) => {
+    let summedSqrs = 0
+    data.forEach(d => summedSqrs += (d - mean)**2)
+    return summedSqrs / (data.length - 1)
+}
 
 const setters = {
 
     appendLatencyPing(dataPoint){
-        let {runningLatencySum, numLatencyPings} = this.state;
+        let {runningLatencySum, numLatencyPings, latencyPings} = this.state;
+        let latencyPingsCopy = [...latencyPings]
+
+        const timeDiff = dataPoint.serverTime - dataPoint.clientTime;
+
+        latencyPingsCopy.push(timeDiff)
         
         numLatencyPings += 1;
-        runningLatencySum += dataPoint.serverTime - dataPoint.clientTime;
+        runningLatencySum += timeDiff
         const latency = Math.round(runningLatencySum / numLatencyPings)
-        this.setState({runningLatencySum, numLatencyPings, latency})
+
+        const latencyVariance = getVariance(latencyPingsCopy, latency)
+
+
+        this.setState({runningLatencySum, numLatencyPings, latency, latencyPings: latencyPingsCopy, latencyVariance})
         // this.setters.setLatencyPings([...this.state.latencyPings, dataPoint])
     },
 
@@ -24,11 +38,11 @@ const setters = {
         })
     },
 
-    setPlayerDelay(player, roundtrip){
+    setPlayerLatencyInfo({player, roundtrip, playerLatencyPings}){
         const playerDelays = {...this.state.playerDelays};
         playerDelays[player] = roundtrip;
 
-        this.setState({playerDelays})
+        this.setState({playerDelays, playerLatencyPings})
     }
 
 }

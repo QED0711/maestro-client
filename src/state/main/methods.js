@@ -22,6 +22,10 @@ const methods = {
         return this.state.latency
     },
 
+    getLatencyPings(){
+        return this.state.latencyPings
+    },
+
     getCount(){
         return this.state.count
     },

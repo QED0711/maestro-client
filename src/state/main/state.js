@@ -13,6 +13,7 @@ const state = {
     latencyPings: [],
     runningLatencySum: 0,
     numLatencyPings: 0,
+    latencyVariance: null,
     latency: null,
 
     playerDelays: {},
@@ -31,6 +32,7 @@ const state = {
 
     player: null,
     playerCued: false,
+    playerLatencyPings: null,
 
     activeCues: []
 
