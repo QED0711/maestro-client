@@ -32,13 +32,14 @@ const SocketManager = ({ children, context }) => {
             }, 2000)
 
             socket.on(`time-pong-${state.clientID}`, data => {
-                setters.appendLatencyPing({serverTime: data.time, clientTime: Date.now()})
+                // setters.appendLatencyPing({serverTime: data.time, clientTime: Date.now()})
+                setters.appendLatencyPing({serverTime: data.time, clientTime: (performance.timeOrigin + performance.now())})
             })
 
-            socket.on(`sync-${state.clientID}`, data => {
-                console.log("FIRED")
-                setters.appendLatencyPing({ ...data, clientTime: Date.now() })
-            })
+            // socket.on(`sync-${state.clientID}`, data => {
+            //     // setters.appendLatencyPing({ ...data, clientTime: Date.now() })
+            //     setters.appendLatencyPing({ ...data, clientTime: performance.now() })
+            // })
 
             socket.on(`syncComplete-${state.clientID}`, data => {
                 setters.calcAndSetLatency()
@@ -82,22 +83,24 @@ const SocketManager = ({ children, context }) => {
             })
 
 
-
-            // CUE TEST
             socket.on(`execCue-${state.sessionKey}`, data => {
 
                 let { cue, startMeasure,  delay, delayAdjustments, repeatStart = 0, tempoShift = 1,} = data;
                 const player = methods.getPlayer();
                 const latency = methods.getLatency();
 
-                const startTime = player ? Date.now() + delay + delayAdjustments[player] : Date.now() + delay
-                console.log(Date.now(), startTime)
+                // const startTime = player ? Date.now() + delay + delayAdjustments[player] : Date.now() + delay
+                const startTime = player 
+                    ? (performance.timeOrigin + performance.now()) + delay + delayAdjustments[player] 
+                    : (performance.timeOrigin + performance.now()) + delay
+
+                console.log(performance.now(), startTime)
                 // console.log(data)
                 setters.setPlayActive(true)
 
                 // variable initialization
                 let nextTick = startTime - latency;
-
+                
                 let currentCue;
 
                 let measureTicks;
@@ -120,7 +123,8 @@ const SocketManager = ({ children, context }) => {
                 
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
-                        if (Date.now() >= nextTick) {
+                        // if (Date.now() >= nextTick) {
+                        if ((performance.timeOrigin + performance.now()) >= nextTick) {
 
                             const isMuted = methods.getIsMuted();
 

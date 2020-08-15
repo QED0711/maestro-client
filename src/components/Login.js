@@ -16,10 +16,6 @@ const Login = () => {
     }
 
 
-    useEffect(() => {
-        // (state.clientID && !state.latency) && socket.emit(`sync`, {clientID: state.clientID})
-    }, [state.clientID])
-
     return !state.role 
     ?
     (
