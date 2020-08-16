@@ -33,6 +33,7 @@ const state = {
     player: null,
     playerCued: false,
     playerLatencyPings: null,
+    playerLatencyVariance: null,
 
     activeCues: []
 

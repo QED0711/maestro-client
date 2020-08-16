@@ -30,15 +30,16 @@ const PlayerLatencyChart = ({closeChart, selectedPlayer}) => {
     return (
         <div className="player-latency-chart">
             <h3>{selectedPlayer}</h3>
+            {<p>Variance: {state.playerLatencyVariance.toFixed(5)}</p>}
             <LineChart 
                 data={[formatData(state.playerLatencyPings)]}
                 dataPoints
                 mouseOverHandler={handleHoverPoint}
                 axes
                 width={window.innerWidth - 100}
-                
+                yTicks={4}
             />
-            {hoveredPoint}
+            {hoveredPoint && <p>Latency: {hoveredPoint}</p>}
             <br/>
             <button onClick={closeChart}>Close</button>
             <button onClick={handleResetClick}>Rest</button>

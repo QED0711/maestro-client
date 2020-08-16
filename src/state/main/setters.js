@@ -38,11 +38,11 @@ const setters = {
         })
     },
 
-    setPlayerLatencyInfo({ player, roundtrip, playerLatencyPings }) {
+    setPlayerLatencyInfo({ player, roundtrip, playerLatencyPings, playerLatencyVariance }) {
         const playerDelays = { ...this.state.playerDelays };
         playerDelays[player] = roundtrip;
 
-        this.setState({ playerDelays, playerLatencyPings })
+        this.setState({ playerDelays, playerLatencyPings, playerLatencyVariance })
     },
 
     resetLatency() {

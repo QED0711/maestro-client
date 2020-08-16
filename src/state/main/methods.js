@@ -26,6 +26,10 @@ const methods = {
         return this.state.latencyPings
     },
 
+    getLatencyVariance(){
+        return this.state.latencyVariance
+    },
+
     getCount(){
         return this.state.count
     },
