@@ -1,0 +1,1 @@
+docker build -t maestro_ui:latest .
