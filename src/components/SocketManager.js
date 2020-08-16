@@ -29,7 +29,7 @@ const SocketManager = ({ children, context }) => {
             // custom ping interval
             setInterval(() => {
                 socket.emit("client-ping", {clientID: state.clientID})
-            }, 1000)
+            }, 5000)
 
             socket.on(`time-pong-${state.clientID}`, data => {
                 // setters.appendLatencyPing({serverTime: data.time, clientTime: Date.now()})
