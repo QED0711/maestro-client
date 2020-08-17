@@ -1,0 +1,22 @@
+.App {
+  text-align: center;
+}
+
+
+.is-muted-true{
+  background-color: rgb(226, 90, 90);
+}
+
+
+#top-banner{
+  background-color: rgb(177, 177, 177);
+  text-align: left;
+  padding: 0.5rem 1rem ;
+}
+
+.banner-item{
+  margin: 0 1rem;
+  padding: 0 1rem 0 0;
+  font-weight: bold;
+  border-right: 1px solid black;
+}

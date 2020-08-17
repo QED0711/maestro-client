@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import './App.css';
+import './css/App.css';
 import './css/metronome-display.css';
 import './css/conductor-panel.css';
 import './css/player-panel.css';
@@ -24,6 +24,7 @@ import PlayerContainer from './components/PlayerContainer';
 import Login from './components/Login';
 import SocketManager from './components/SocketManager';
 import AudioControls from './components/AudioControls';
+import TopBanner from './components/TopBanner';
 
 
 const App = () => {
@@ -91,16 +92,19 @@ const App = () => {
   return (
     <SocketManager>
       <div className="App">
-        <AudioControls />
         <BrowserRouter>
           <Switch>
             <Route exact path="/">
               <Login />
             </Route>
             <Route exact path="/conductor">
+              <TopBanner/>
+              <AudioControls />
               <ConductorContainer />
             </Route>
             <Route exact path="/player">
+              <TopBanner/>
+              <AudioControls />
               <PlayerContainer />
             </Route>
           </Switch>
