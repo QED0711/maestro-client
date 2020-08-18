@@ -25,8 +25,8 @@ const AudioControls = () => {
         <div id="audio-controls">
             
             <br/>
-            <button onClick={handleInitAudioClick}>Test Audio</button>
-            <button id="mute-btn" className={`is-muted-${state.isMuted}`} onClick={handleMuteClick}>
+            <button className="audio-control-btn" onClick={handleInitAudioClick}>Test Audio</button>
+            <button id="mute-btn" className={`audio-control-btn is-muted-${state.isMuted}`} onClick={handleMuteClick} title={"(ctrl + M)"}>
                 {state.isMuted ? "Unmute" : "Mute"}
             </button>
         </div>

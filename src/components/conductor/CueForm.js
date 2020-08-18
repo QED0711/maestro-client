@@ -73,25 +73,42 @@ const CueForm = () => {
     return (
         <>
             <form id="cue-form" onSubmit={handleCueSubmit}>
+                <div
+                    className="panel-section"
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                }}>
+                    <div>
+                        <label>Cue ID</label><br />
+                        <select onChange={handleCueChange} value={cue} style={{ width: "10rem" }}>
+                            {genCueOptions(cueSheet)}
+                        </select>
+                    </div>
 
-                <label>Cue ID</label><br />
-                {/* <input type="text" value={cue} onChange={handleCueChange} /> */}
-                <select onChange={handleCueChange} value={cue} style={{width: "10rem"}}>
-                    {genCueOptions(cueSheet)}
-                </select>
-                <br />
-                <label>Start Measure</label><br />
-                <input type="text" value={startMeasure} onChange={handleStartMeasureChange} />
-                <br />
-                <label>Start Delay</label><br />
-                <input type="number" value={cueDelay} onChange={handleDelayChange} step="0.1" />
-                <br />
-                <label>Repeat Start Measure</label><br />
-                <input type="number" value={repeatStart} onChange={handleRepeatStartChange} step="1" />
-                <br />
-                <label>Tempo Shift</label><br />
-                <input type="number" value={tempoShift} onChange={handleTempoShiftChange} step="0.01" />
-                <br />
+
+
+                    <div>
+                        <label>Start Delay</label><br />
+                        <input type="number" value={cueDelay} onChange={handleDelayChange} step="0.1" />
+                    </div>
+                </div>
+
+                <div className="panel-section">
+
+                    <label>Start Measure</label><br />
+                    <input type="text" value={startMeasure} onChange={handleStartMeasureChange} />
+
+                    <br />
+
+                    <label>Repeat Start Measure</label><br />
+                    <input type="number" value={repeatStart} onChange={handleRepeatStartChange} step="1" />
+
+                    <br />
+
+                    <label>Tempo Shift</label><br />
+                    <input type="number" value={tempoShift} onChange={handleTempoShiftChange} step="0.01" />
+                </div>
 
                 <input id="execute-cue-btn" type="submit" value="Execute Cue" />
             </form>

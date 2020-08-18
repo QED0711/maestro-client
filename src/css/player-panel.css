@@ -1,4 +1,29 @@
 
+#player-selection{
+    width: fit-content;
+
+    margin: 0 auto;
+    padding: 1rem;
+
+    border-radius: 10px;
+    box-sizing: border-box;
+
+    background-color: whitesmoke;
+}
+
+.player-selection-button{
+    margin: 1rem;
+    cursor: pointer;
+    font-size: large;
+}
+
+.player-selection-button:hover{
+    animation-name: hover-button;
+    animation-duration: 250ms;
+    animation-fill-mode: forwards;
+}
+
+
 #cue-receiver{
     width: 80vw;
     margin: 3rem auto;

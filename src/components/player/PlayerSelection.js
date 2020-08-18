@@ -11,10 +11,11 @@ const PlayerSelection = () => {
 
     return (
         <div id="player-selection">
-            <button className="player-cue-button" onClick={handlePlayerSelect("clarinet")} >Clarinet</button>
-            <button className="player-cue-button" onClick={handlePlayerSelect("violin")} >Violin</button>
-            <button className="player-cue-button" onClick={handlePlayerSelect("cello")} >Cello</button>
-            <button className="player-cue-button" onClick={handlePlayerSelect("piano")} >Piano</button>
+            <h1 className="panel-title">Select Your Part</h1>
+            <button className="player-selection-button" onClick={handlePlayerSelect("clarinet")} >Clarinet</button>
+            <button className="player-selection-button" onClick={handlePlayerSelect("violin")} >Violin</button>
+            <button className="player-selection-button" onClick={handlePlayerSelect("cello")} >Cello</button>
+            <button className="player-selection-button" onClick={handlePlayerSelect("piano")} >Piano</button>
         </div>
     )
 

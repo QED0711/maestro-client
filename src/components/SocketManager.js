@@ -27,6 +27,7 @@ const SocketManager = ({ children, context }) => {
         if (state.clientID) {
 
             // custom ping interval
+            socket.emit("client-ping", {clientID: state.clientID})
             setInterval(() => {
                 socket.emit("client-ping", {clientID: state.clientID})
             }, 5000)

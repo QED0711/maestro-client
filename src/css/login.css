@@ -1,0 +1,29 @@
+.role-tab{
+    margin: 1rem;
+    font-size: 2rem;
+
+    border-radius: 8px;
+    border: 4px solid;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+}
+
+.role-tab:hover{
+    animation-name: hover-button;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
+
+#conductor-login{
+    color: #f04747;
+    border-color: #f04747;
+}
+
+#player-login{
+    color: #1daeda;
+    border-color: #1daeda;
+}
+

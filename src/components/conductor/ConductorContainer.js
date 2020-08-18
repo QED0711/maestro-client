@@ -25,13 +25,13 @@ const ConductorContainer = () => {
         ?
         (
             <div id="conductor-container" className="container">
-                <TabButton handleClick={handleTabChange("metronome")}>
+                {/* <TabButton handleClick={handleTabChange("metronome")}>
                     Metronome
                 </TabButton>
 
                 <TabButton handleClick={handleTabChange("cue")}>
                     Cue Sheet
-                </TabButton>
+                </TabButton> */}
 
 
                 {tab === "cue" && <ConfigCue />}

@@ -1,0 +1,27 @@
+
+.audio-control-btn{
+    margin: 1rem;
+    padding: 0.5rem 0;
+    font-size: 1.5rem;
+
+
+    cursor: pointer;
+
+    border-radius: 8px;
+    border: 1px solid grey;
+
+    width: 20vw;
+}
+
+.audio-control-btn:hover{
+    animation-name: hover-button;
+    animation-duration: 250ms;
+    animation-fill-mode: forwards;
+}
+
+
+.is-muted-true{
+    background-color: rgb(226, 90, 90);
+    color: white;
+    border-color: black;
+}

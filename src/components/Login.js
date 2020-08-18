@@ -20,20 +20,12 @@ const Login = () => {
     ?
     (
         <div id="login">
-            <button onClick={handleClick("conductor")}>
+            <button id="conductor-login" className="role-tab" onClick={handleClick("conductor")}>
                 Conductor
             </button>
-            <button onClick={handleClick("player")}>
+            <button id="player-login" className="role-tab" onClick={handleClick("player")}>
                 Performer
             </button>
-            
-            <br/>
-
-            {
-                !state.latency
-                    ? "Synchronizing with server..."
-                    : "Synchronization established"
-            }
         </div>
     )
     :
