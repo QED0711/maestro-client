@@ -51,7 +51,7 @@ const CueDisplay = () => {
             {state.player && <p>{state.player}</p>}
             <h1>Measure: <strong>{state.cueDisplay.currentMeasure || "--"}</strong></h1>
             {/* <h3>{state.cueDisplay.bpm || 1}</h3> */}
-            <h3>Beat: <strong>{state.cueDisplay.currentBeat || 1}</strong></h3>
+            <h2>Beat: <strong>{state.cueDisplay.currentBeat || 1}</strong></h2>
             <div className="beat-tick-container" style={{ gridTemplateColumns: spaceBeats(state.cueDisplay.numBeats, state.cueDisplay.numSubdivisions).map(beat => beat + "fr").join(" ") }}>
                 {genBeatTicks(state.cueDisplay.numBeats, state.cueDisplay.currentBeat)}
             </div>
