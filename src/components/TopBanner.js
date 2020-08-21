@@ -2,7 +2,12 @@ import React, { useContext } from 'react'
 import { mainContext } from '../state/main/mainProvider'
 
 const TopBanner = () => {
-    const { state } = useContext(mainContext)
+    const { state, setters } = useContext(mainContext)
+
+    // EVENTS
+    const handleResetClick = e => {
+        setters.resetLatency();
+    }
 
     return (
         <div id="top-banner">
@@ -17,6 +22,7 @@ const TopBanner = () => {
 
             <span className="banner-item">
                 {state.latencyVariance && `Latency Variance: ${state.latencyVariance.toFixed(5)}`}
+                <button id="reset-button" onClick={handleResetClick}>reset</button>
             </span>
         </div>
     )

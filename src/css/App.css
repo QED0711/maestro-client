@@ -29,6 +29,25 @@
   border-right: 1px solid black;
 }
 
+#reset-button{
+  margin: 0 1rem;
+
+  text-align: center;
+  font-weight: bold;
+
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 0.25rem 0.5rem;
+
+  cursor: pointer;
+}
+
+#reset-button:hover{
+  animation-name: hover-button;
+  animation-duration: 250ms;
+  animation-fill-mode: forwards;
+}
+
 
 .panel-section{
   margin: 1rem 0;
