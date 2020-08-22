@@ -15,6 +15,20 @@
 }
 
 
+#session-form{
+  margin: 1rem auto;
+  padding: 2rem;
+  width: fit-content;
+  
+  background-color: whitesmoke;
+
+
+  border-radius: 10px;
+
+  font-size: 1.5rem;
+
+}
+
 
 #top-banner{
   background-color: rgb(177, 177, 177);

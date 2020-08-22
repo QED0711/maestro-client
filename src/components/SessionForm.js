@@ -27,7 +27,7 @@ const SessionForm = () => {
     return state.sessionKey
         ? <Redirect to={"/"} />
         : (
-        <form onSubmit={handleSubmit}>
+        <form id="session-form" onSubmit={handleSubmit}>
             <label htmlFor={"session-key"}>Session Key</label>
             <br/>
             <input type="text" id="session-key" required />
