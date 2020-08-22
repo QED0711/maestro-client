@@ -28,6 +28,7 @@ import Login from './components/Login';
 import SocketManager from './components/SocketManager';
 import AudioControls from './components/AudioControls';
 import TopBanner from './components/TopBanner';
+import SessionForm from './components/SessionForm';
 
 
 const App = () => {
@@ -97,6 +98,9 @@ const App = () => {
       <div className="App">
         <BrowserRouter>
           <Switch>
+            <Route exact path="/session">
+              <SessionForm />
+            </Route>
             <Route exact path="/">
               <Login />
             </Route>

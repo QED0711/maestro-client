@@ -15,6 +15,9 @@ const Login = () => {
         setters.setRole(role)
     }
 
+    if(!state.sessionKey){
+        return <Redirect to={"/session"}/>
+    }
 
     return !state.role 
     ?

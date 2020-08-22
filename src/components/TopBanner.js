@@ -12,6 +12,10 @@ const TopBanner = () => {
     return (
         <div id="top-banner">
             <span className="banner-item">
+                Session Key: {state.sessionKey}                
+            </span>
+
+            <span className="banner-item">
                 <label>Audio Context Loaded</label>
                 <input type={"checkbox"} checked={!!state.audioContextLoaded} />
             </span>

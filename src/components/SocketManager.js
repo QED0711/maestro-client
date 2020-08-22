@@ -24,8 +24,8 @@ const SocketManager = ({ children, context }) => {
         !state.clientID && setters.setClientID(Date.now())
 
         // setup socket actions here
-        if (state.clientID) {
-
+        if (state.clientID && state.sessionKey) {
+            console.log("SOCKETS CREATED")
             // custom ping interval
             socket.emit("client-ping", {clientID: state.clientID})
             setInterval(() => {
@@ -308,7 +308,7 @@ const SocketManager = ({ children, context }) => {
 
 
 
-    }, [state.clientID])
+    }, [state.clientID, state.sessionKey])
 
     return <>{children}</>
 
