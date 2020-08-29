@@ -94,8 +94,8 @@ const App = () => {
 
 
   return (
-    <SocketManager>
-      <div className="App">
+      <SocketManager>
+    <div className="App">
         <BrowserRouter>
           <Switch>
             <Route exact path="/session">

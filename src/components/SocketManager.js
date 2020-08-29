@@ -17,12 +17,12 @@ import cueTest from '../generatedCueSheet.json';
 const SocketManager = ({ children, context }) => {
 
     const { state, setters, methods } = context
-
     useEffect(() => {
-
+        
+        console.log("USE EFFECT CALLED")
         // set the clientID if it has not been set
         !state.clientID && setters.setClientID(Date.now())
-
+        console.log(state.clientID, state.sessionKey)
         // setup socket actions here
         if (state.clientID && state.sessionKey) {
             console.log("SOCKETS CREATED")
@@ -315,5 +315,5 @@ const SocketManager = ({ children, context }) => {
 }
 
 export default subscribe(SocketManager, [
-    { context: mainContext, dependencies: ["clientID"] }
+    { context: mainContext, dependencies: ["clientID", "sessionKey"] }
 ])

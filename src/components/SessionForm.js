@@ -15,7 +15,7 @@ const SessionForm = () => {
 
         const sessionKey = document.getElementById("session-key").value.toLowerCase();
 
-        if (["micah","duo","anna","ethan", 'umd'].includes(sessionKey)){
+        if (["micah","duo","anna","ethan", 'umd', 'quinn'].includes(sessionKey)){
             setters.setSessionKey(sessionKey)
         } else {
             setSessionError("Sorry, that is not a valid session key")
