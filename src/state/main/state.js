@@ -5,7 +5,7 @@ const state = {
 
     clientID: null,
     sessionKey: null,
-    sessionKey: "alpha-test",
+    // sessionKey: "alpha-test",
     role: null,
 
     playActive: false,
