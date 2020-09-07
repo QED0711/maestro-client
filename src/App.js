@@ -56,8 +56,8 @@ const App = () => {
 
       try {
         if (e.ctrlKey) {
-          
-          
+
+
           if (e.key === "e") {
             e.preventDefault()
             document.getElementById("execute-cue-btn").click()
@@ -69,8 +69,8 @@ const App = () => {
           if (e.key === "m") {
             document.getElementById("mute-btn").click()
           }
-          
-          
+
+
           // player cues hotkeys
           const playerCues = document.getElementsByClassName("player-cue-button")
           for (let btn of playerCues) {
@@ -94,8 +94,8 @@ const App = () => {
 
 
   return (
-      <SocketManager>
-    <div className="App">
+    <SocketManager>
+      <div className="App">
         <BrowserRouter>
           <Switch>
             <Route exact path="/session">
@@ -105,12 +105,12 @@ const App = () => {
               <Login />
             </Route>
             <Route exact path="/conductor">
-              <TopBanner/>
+              <TopBanner />
               <AudioControls />
               <ConductorContainer />
             </Route>
             <Route exact path="/player">
-              <TopBanner/>
+              <TopBanner />
               <AudioControls />
               <PlayerContainer />
             </Route>

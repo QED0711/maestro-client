@@ -58,7 +58,7 @@ const PlayerCues = () => {
 
                     <br/>
 
-                    <input className="player-adjusted-delay" type="number" data-player={player} step="1" defaultValue="0" max="99000" min="-99000" />
+                    <input id={`${player}-adjusted-delay`} className="player-adjusted-delay" type="number" data-player={player} step="1" defaultValue="0" max="99000" min="-99000" />
                 </div>
             )
         })

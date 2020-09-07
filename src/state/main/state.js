@@ -4,8 +4,8 @@ const state = {
     audioContextLoaded: false,
 
     clientID: null,
-    // sessionKey: "alpha-test",
     sessionKey: null,
+    sessionKey: "alpha-test",
     role: null,
 
     playActive: false,

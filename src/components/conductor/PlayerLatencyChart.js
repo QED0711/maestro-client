@@ -27,6 +27,13 @@ const PlayerLatencyChart = ({closeChart, selectedPlayer}) => {
         closeChart()
     }
 
+    const handleSetDelay = e => {
+        const playerDelay = document.getElementById(`${selectedPlayer}-adjusted-delay`)
+        const meanLatency = Math.round(state.playerLatencyPings.reduce((a,b) => a + b) / state.playerLatencyPings.length)
+        
+        playerDelay.value = meanLatency.toString()
+    }
+
     return (
         <div className="player-latency-chart">
             <h3>{selectedPlayer}</h3>
@@ -43,6 +50,7 @@ const PlayerLatencyChart = ({closeChart, selectedPlayer}) => {
             <br/>
             <button onClick={closeChart}>Close</button>
             <button onClick={handleResetClick}>Rest</button>
+            <button onClick={handleSetDelay}>Set Latency Delay</button>
         </div>
     )
 
