@@ -205,7 +205,7 @@ cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 85, repeat: 2 })
 cue.append("C", Cue.genMeasure(144, [2,2,2,2]), {measureNum: 87, repeat: 17 })
 // ritardando
 cue.append("C", Cue.genMeasure(144, [2,2,2,2]), {measureNum: 104, repeat: 4 })
-cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 108, repeat: 5 })
+cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 108, repeat: 6 })
 // ritardando
 cue.append("C", Cue.genMeasure(120, [2,2,2,2]), {measureNum: 114, repeat: 3 })
 cue.append("C", Cue.genMeasure(96, [2,2,2,2]), {measureNum: 117, repeat: 3 })
