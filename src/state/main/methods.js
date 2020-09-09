@@ -1,3 +1,4 @@
+import state from "./state";
 
 const methods = {
 
@@ -52,6 +53,17 @@ const methods = {
 
     getCueDelay(){
         return this.state.cueDelay
+    },
+
+    async getTrueLatency(){
+        return new Promise(resolve => {
+            while (true){ // block until true latency has a value
+                if(this.state.trueLatency) break;
+            }
+            const trueLatency = this.state.trueLatency
+            this.setters.setTrueLatency(null) // reset trueLatency value
+            resolve(trueLatency)
+        })
     }
 
 

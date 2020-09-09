@@ -91,19 +91,33 @@ const SocketManager = ({ children, context }) => {
                 data.player === player && setters.resetLatency()
             })
 
+            socket.on(`return-travel-time-${state.sessionKey}`, data => {
 
-            socket.on(`execCue-${state.sessionKey}`, data => {
+                const trueLatency = Math.round((Date.now() - data.time) / 2)
+                setters.setTrueLatency(trueLatency)
+
+            })
+
+
+            socket.on(`execCue-${state.sessionKey}`, async data => {
+
+                socket.emit("request-travel-time", {sessionKey: state.sessionKey, time: Date.now()})
+
 
                 let { cue, startMeasure,  delay, delayAdjustments, repeatStart = 0, tempoShift = 1,} = data;
                 const player = methods.getPlayer();
                 const latency = methods.getLatency();
+                const now = performance.now()
 
+                const trueLatency = await methods.getTrueLatency()
+
+                console.log({trueLatency})
                 // const startTime = player ? Date.now() + delay + delayAdjustments[player] : Date.now() + delay
                 const startTime = player 
-                    ? (performance.timeOrigin + performance.now()) + delay + delayAdjustments[player] 
-                    : (performance.timeOrigin + performance.now()) + delay
+                    ? (performance.timeOrigin + now) + delay + delayAdjustments[player] 
+                    : (performance.timeOrigin + now) + delay
 
-                console.log(performance.now(), startTime)
+                console.log(now, startTime)
                 // console.log(data)
                 setters.setPlayActive(true)
 

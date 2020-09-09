@@ -17,6 +17,8 @@ const state = {
     latencyVariance: null,
     latency: null,
 
+    trueLatency: null,
+
     playerDelays: {},
 
     cueDelay: 2000,
