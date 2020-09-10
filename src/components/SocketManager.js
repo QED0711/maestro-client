@@ -14,12 +14,20 @@ import synth from '../helpers/synth'
 // import cueTest from '../cueSchema.json';
 import cueTest from '../generatedCueSheet.json';
 
+// =========================== HELPERS ===========================
+import parseQueryString from '../helpers/parseQueryString'
+
 const SocketManager = ({ children, context }) => {
 
     const { state, setters, methods } = context
+
+
+
     useEffect(() => {
-        
-        console.log("USE EFFECT CALLED")
+
+
+        // const queryParams = parseQueryString(window.location.search)
+
         // set the clientID if it has not been set
         !state.clientID && setters.setClientID(Date.now())
         console.log(state.clientID, state.sessionKey)
@@ -27,14 +35,14 @@ const SocketManager = ({ children, context }) => {
         if (state.clientID && state.sessionKey) {
             console.log("SOCKETS CREATED")
             // custom ping interval
-            socket.emit("client-ping", {clientID: state.clientID})
+            socket.emit("client-ping", { clientID: state.clientID })
             setInterval(() => {
-                socket.emit("client-ping", {clientID: state.clientID})
+                socket.emit("client-ping", { clientID: state.clientID })
             }, 5000)
 
             socket.on(`time-pong-${state.clientID}`, data => {
                 // setters.appendLatencyPing({serverTime: data.time, clientTime: Date.now()})
-                setters.appendLatencyPing({serverTime: data.time, clientTime: (performance.timeOrigin + performance.now())})
+                setters.appendLatencyPing({ serverTime: data.time, clientTime: (performance.timeOrigin + performance.now()) })
             })
 
             // socket.on(`sync-${state.clientID}`, data => {
@@ -81,8 +89,8 @@ const SocketManager = ({ children, context }) => {
 
             socket.on(`execReportPlayerPing-${state.sessionKey}`, data => {
                 if (methods.getRole() === "conductor") {
-                    const { player, roundtrip, latencyPings, latencyVariance} = data
-                    setters.setPlayerLatencyInfo({player, roundtrip, playerLatencyPings: latencyPings, playerLatencyVariance: latencyVariance})
+                    const { player, roundtrip, latencyPings, latencyVariance } = data
+                    setters.setPlayerLatencyInfo({ player, roundtrip, playerLatencyPings: latencyPings, playerLatencyVariance: latencyVariance })
                 }
             })
 
@@ -93,36 +101,50 @@ const SocketManager = ({ children, context }) => {
 
             socket.on(`return-travel-time-${state.clientID}`, data => {
 
-                const trueLatency = Math.round((Date.now() - data.time) / 2)
+                const trueLatency = (Date.now() - data.time) / 2
                 setters.setTrueLatency(trueLatency)
 
             })
 
 
             socket.on(`execCue-${state.sessionKey}`, async data => {
-
-                socket.emit("request-travel-time", {clientID: state.clientID, time: Date.now()})
-
-
-                let { cue, startMeasure,  delay, delayAdjustments, repeatStart = 0, tempoShift = 1,} = data;
-                const player = methods.getPlayer();
-                const latency = methods.getLatency();
+                
                 const now = performance.now()
 
-                const trueLatency = await methods.getTrueLatency()
+                const experimentalMode = methods.getExperimentalMode();
+                experimentalMode && socket.emit("request-travel-time", { clientID: state.clientID, time: Date.now() })
 
-                console.log({trueLatency})
-                // const startTime = player ? Date.now() + delay + delayAdjustments[player] : Date.now() + delay
-                const startTime = player 
-                    ? (performance.timeOrigin + now) + delay - trueLatency + delayAdjustments[player] 
-                    : (performance.timeOrigin + now) + delay - trueLatency
+                
+                let { cue, startMeasure, delay, delayAdjustments, repeatStart = 0, tempoShift = 1, } = data;
+                const player = methods.getPlayer();
+                const latency = methods.getLatency();
 
-                console.log(now, startTime)
+
+                const trueLatency = experimentalMode ? await methods.getTrueLatency() : null;
+                console.log({ trueLatency })
+
+                // calculate start time
+                let startTime;
+                if (experimentalMode) {
+                    startTime = player
+                        ? (performance.timeOrigin + now) + delay - trueLatency + delayAdjustments[player]
+                        : (performance.timeOrigin + now) + delay - trueLatency
+                } else {
+                    startTime = player
+                        ? (performance.timeOrigin + now) + delay + delayAdjustments[player]
+                        : (performance.timeOrigin + now) + delay
+                }
+
                 setters.setPlayActive(true)
 
                 // variable initialization
-                let nextTick = startTime - latency; // add query param to alter this calculation
-                
+                let nextTick;
+                if(experimentalMode){
+                    nextTick = startTime;
+                } else {
+                    nextTick = startTime - latency;
+                }
+
                 let currentCue;
 
                 let measureTicks;
@@ -142,10 +164,9 @@ const SocketManager = ({ children, context }) => {
                     tempoAdjustment,
                     stopAdjustment;
 
-                
+
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
-                        // if (Date.now() >= nextTick) {
                         if ((performance.timeOrigin + performance.now()) >= nextTick) {
 
                             const isMuted = methods.getIsMuted();
@@ -199,7 +220,7 @@ const SocketManager = ({ children, context }) => {
                                 if (currentMeasure.stopAdjustment) currentBPM = null;
                                 // only progress to next measure if repeatStart is 0
                                 repeatStart === 0 ? currentMeasure++ : repeatStart--
-                                
+
                                 currentTick = 1
                                 currentBeat = 1
                             } else {

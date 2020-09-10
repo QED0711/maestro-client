@@ -55,6 +55,10 @@ const methods = {
         return this.state.cueDelay
     },
 
+    getExperimentalMode(){
+        return this.state.experimentalMode;
+    },
+
     async getTrueLatency(){
         const requestTrueLatency = resolve => () => {
             if(this.state.trueLatency){
