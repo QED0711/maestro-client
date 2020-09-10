@@ -118,11 +118,10 @@ const SocketManager = ({ children, context }) => {
                     : (performance.timeOrigin + now) + delay - trueLatency
 
                 console.log(now, startTime)
-                // console.log(data)
                 setters.setPlayActive(true)
 
                 // variable initialization
-                let nextTick = startTime - latency;
+                let nextTick = startTime - latency; // add query param to alter this calculation
                 
                 let currentCue;
 
