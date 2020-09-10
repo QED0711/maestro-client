@@ -91,7 +91,7 @@ const SocketManager = ({ children, context }) => {
                 data.player === player && setters.resetLatency()
             })
 
-            socket.on(`return-travel-time-${state.sessionKey}`, data => {
+            socket.on(`return-travel-time-${state.clientID}`, data => {
 
                 const trueLatency = Math.round((Date.now() - data.time) / 2)
                 setters.setTrueLatency(trueLatency)
@@ -101,7 +101,7 @@ const SocketManager = ({ children, context }) => {
 
             socket.on(`execCue-${state.sessionKey}`, async data => {
 
-                socket.emit("request-travel-time", {sessionKey: state.sessionKey, time: Date.now()})
+                socket.emit("request-travel-time", {clientID: state.clientID, time: Date.now()})
 
 
                 let { cue, startMeasure,  delay, delayAdjustments, repeatStart = 0, tempoShift = 1,} = data;
@@ -114,8 +114,8 @@ const SocketManager = ({ children, context }) => {
                 console.log({trueLatency})
                 // const startTime = player ? Date.now() + delay + delayAdjustments[player] : Date.now() + delay
                 const startTime = player 
-                    ? (performance.timeOrigin + now) + delay + delayAdjustments[player] 
-                    : (performance.timeOrigin + now) + delay
+                    ? (performance.timeOrigin + now) + delay - trueLatency + delayAdjustments[player] 
+                    : (performance.timeOrigin + now) + delay - trueLatency
 
                 console.log(now, startTime)
                 // console.log(data)

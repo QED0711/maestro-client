@@ -56,13 +56,19 @@ const methods = {
     },
 
     async getTrueLatency(){
-        return new Promise(resolve => {
-            while (true){ // block until true latency has a value
-                if(this.state.trueLatency) break;
+        const requestTrueLatency = resolve => () => {
+            if(this.state.trueLatency){
+                const tl = this.state.trueLatency
+                console.log(tl)
+                this.setters.setTrueLatency(null) 
+                resolve(tl)
+                return
+            } else {
+                setTimeout(requestTrueLatency(resolve), 10)
             }
-            const trueLatency = this.state.trueLatency
-            this.setters.setTrueLatency(null) // reset trueLatency value
-            resolve(trueLatency)
+        }
+        return new Promise(resolve => { 
+           requestTrueLatency(resolve)() 
         })
     }
 
