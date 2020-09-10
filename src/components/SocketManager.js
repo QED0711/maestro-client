@@ -185,7 +185,7 @@ const SocketManager = ({ children, context }) => {
 
 
                 console.log(nextTick - timeOrigin + performance.now())
-                if(nextTick < timeOrigin + performance.now()) debugger
+                // if(nextTick < timeOrigin + performance.now()) debugger
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
                         // console.log( // try switching back over to Date.now for timing function (especially in creation of nextTick)
