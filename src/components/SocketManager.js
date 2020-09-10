@@ -100,7 +100,7 @@ const SocketManager = ({ children, context }) => {
             })
 
             socket.on(`return-travel-time-${state.clientID}`, data => {
-
+                console.log("RECEIVED TRAVEL TIME")
                 const trueLatency = (Date.now() - data.time) / 2
                 setters.setTrueLatency(trueLatency)
 
@@ -109,34 +109,52 @@ const SocketManager = ({ children, context }) => {
 
             socket.on(`execCue-${state.sessionKey}`, async data => {
                 
+                console.log("EXECUTING CUE")
                 const now = performance.now()
+                const timeOrigin = performance.timeOrigin
+
+                let trueLatency;
 
                 const experimentalMode = methods.getExperimentalMode();
-                experimentalMode && socket.emit("request-travel-time", { clientID: state.clientID, time: Date.now() })
+                
+                if(experimentalMode){
+                    trueLatency = await new Promise(resolve => {
+                        socket.emit("request-travel-time", data, function(data){
+                            resolve((performance.now() - now) / 2)
+                        })
+                    })
+                }
+
+                console.log({trueLatency})
+                // experimentalMode && socket.emit("request-travel-time", { /* clientID: state.clientID, time: timeOrigin + now */ }, function(data){
+                //     localTrueLatency = (performance.now() - now) / 2
+                //     console.log(localTrueLatency)
+                //     debugger
+                // })
 
                 
                 let { cue, startMeasure, delay, delayAdjustments, repeatStart = 0, tempoShift = 1, } = data;
                 const player = methods.getPlayer();
                 const latency = methods.getLatency();
 
-
-                const trueLatency = experimentalMode ? await methods.getTrueLatency() : null;
-                console.log({ trueLatency })
+                // const trueLatency = experimentalMode ? await methods.getTrueLatency() : null;
+                // console.log({ trueLatency, delay, performance: timeOrigin + now, now })
+                // console.log({ delayAdjustments })
 
                 // calculate start time
                 let startTime;
                 if (experimentalMode) {
                     startTime = player
-                        ? (performance.timeOrigin + now) + delay - trueLatency + delayAdjustments[player]
-                        : (performance.timeOrigin + now) + delay - trueLatency
+                        ? (timeOrigin + now) + delay - trueLatency + delayAdjustments[player]
+                        : (timeOrigin + now) + delay - trueLatency
                 } else {
                     startTime = player
-                        ? (performance.timeOrigin + now) + delay + delayAdjustments[player]
-                        : (performance.timeOrigin + now) + delay
+                        ? (timeOrigin + now) + delay + delayAdjustments[player]
+                        : (timeOrigin + now) + delay
                 }
 
                 setters.setPlayActive(true)
-
+                
                 // variable initialization
                 let nextTick;
                 if(experimentalMode){
@@ -144,7 +162,8 @@ const SocketManager = ({ children, context }) => {
                 } else {
                     nextTick = startTime - latency;
                 }
-
+                
+                // console.log({startTime, nextTick, diff: nextTick - timeOrigin + now})
                 let currentCue;
 
                 let measureTicks;
@@ -165,8 +184,16 @@ const SocketManager = ({ children, context }) => {
                     stopAdjustment;
 
 
+                console.log(nextTick - timeOrigin + performance.now())
+                if(nextTick < timeOrigin + performance.now()) debugger
                 const cueInterval = setInterval(() => {
                     if (methods.getPlayActive()) {
+                        // console.log( // try switching back over to Date.now for timing function (especially in creation of nextTick)
+                        //     timeOrigin + performance.now(),
+                        //     nextTick,
+                        //     Date.now(),
+                        //     (timeOrigin + performance.now()) >= nextTick
+                        //     )
                         if ((performance.timeOrigin + performance.now()) >= nextTick) {
 
                             const isMuted = methods.getIsMuted();
