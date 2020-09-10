@@ -32,7 +32,7 @@ const SessionForm = () => {
             <br/>
             <input type="text" id="session-key" required />
             <br/>
-            <input type={"submit"} />
+            <input type={"submit"} value="Join Session" />
             {
                 sessionError
                 &&

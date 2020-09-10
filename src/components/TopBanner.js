@@ -34,8 +34,8 @@ const TopBanner = () => {
             </span>
             
             <span className="banner-item">
-                <label>Experimental Features </label>
-                <input type="checkbox" onChange={handleExperimentalClick} checked={state.experimentalMode} />
+                <label htmlFor="experimental-mode-checkbox">Experimental Features </label>
+                <input id="experimental-mode-checkbox" type="checkbox" onChange={handleExperimentalClick} checked={state.experimentalMode} />
             </span>
         </div>
     )
