@@ -218,11 +218,11 @@ cue.addTempoAdjustment("C", 120, 96, 24, { startMeasure: 114 })
 
 
 /* 
-:::::::::::::::::::::::
-:: CUE CONFIGURATION ::
-:::::::::::::::::::::::
+:::::::::::::::::::::
+:: CUE CALIBRATION ::
+:::::::::::::::::::::
 */
-cue.append("calibration", Cue.genMeasure(352, [4,4,4,4]), {measureNum: 1, repeat: 100})
+cue.append("calibration", Cue.genMeasure(400, [4,4,4,4]), {measureNum: 1, repeat: 100})
 
 
 cue.save("./src/generatedCueSheet.json")
